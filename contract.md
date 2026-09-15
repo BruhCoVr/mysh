@@ -1,9 +1,9 @@
 <h1 align="center" style="font-weight: bold">Team Contract</h1>
 
-**Group Number:** 008<br>
+**Group Number:** 008\
 **Group Member Names:** Ty Wagner, Vladimir Grinfelds-Ventura, Tai Shishiba
 
-**Group Target Grade:** What grade is the group aiming for on the projects?<br>
+**Group Target Grade:** What grade is the group aiming for on the projects?\
 50-59%<br>
 60-69%<br>
 70-79%<br>
@@ -11,44 +11,36 @@
 <mark>90-100%</mark>
 
 <em>**Is that a consensus?** If members are aiming at different grades, work it out now and record what you agreed: what standard of work you will hold each other to, and roughly how many hours each member expects to put in per week. Groups run into trouble far more often over unequal effort than over different ambitions. **We agree to…**</em>
-<div style="outline: 1px solid rgb(255, 255, 255)">
-    <p style="padding: 5px">
-        review all code by other members before being merged to ensure code quality stays consistent. Each member will contribute about (5?) hours per week of total work. This can include code, code reviews, documentation, testing, or any other work needing to be done.
-    </p>
-</div>
+
+review all code by other members before being merged to ensure code quality stays consistent. Each member will contribute about (5?) hours per week of total work. This can include code, code reviews, documentation, testing, or any other work needing to be done.
+
 
 #
 
 <em>**Rules for Participation:**
 Team members need to contribute fully to the best of their ability. Members need to take initiative in participating in the group tasks, especially in areas where they may have strengths. Those with greater ability may also need to help those who may be struggling by guiding, coaching or critiquing. Those who may be struggling should be clear when they need clarification or assistance. To make teams work well, members need to make concerted efforts to be available for meetings. Wanting the group to succeed will contribute to success – begrudging contributions will erode success.
 We agree to....</em>
-<div style="outline: 1px solid rgb(255, 255, 255)">
-    <p style="padding: 5px">
-        break up work into equal chunks, where team members ideally allocate an equal amount of work into the group tasks. Those who may be struggling to keep up with the workload can request for help or have some tasks delegated after a civil discussion between group members to reach a reasonable consensus as to how to distribute responsibilities .
-    </p>
-</div>
+
+break up work into equal chunks, where team members ideally allocate an equal amount of work into the group tasks. Those who may be struggling to keep up with the workload can request for help or have some tasks delegated after a civil discussion between group members to reach a reasonable consensus as to how to distribute responsibilities .
+
 
 #
 
 <em>**Communication and Conduct:** 
 For effective teamwork to occur there needs to be a free, open and appropriate expression of ideas and feelings at all times. Each member actively listens to other members, and after listening, provides effective non-judgmental feedback. Members take responsibility to communicate their ideas, thoughts, concerns, etc. Respectful communication (verbal and non-verbal) in response to cultural and personal differences contributes to team cohesion.
 We agree to...</em>
-<div style="outline: 1px solid rgb(255, 255, 255)">
-    <p style="padding: 5px">
-        communicate in a civilized manner, promising to offer constructive criticism while also being open to others ideas and feelings - making our group meetings a safe space for these discussions to take place. These will include things like disagreements in decisions, conflicts in beliefs, etc. (including non-technical topics).
-    </p>
-</div>
+
+communicate in a civilized manner, promising to offer constructive criticism while also being open to others ideas and feelings - making our group meetings a safe space for these discussions to take place. These will include things like disagreements in decisions, conflicts in beliefs, etc. (including non-technical topics).
+
 
 #
 
 <em>**Organization and Meetings:** 
 An effective team needs to be organized. Members determine how the team is organized. This in turn, contributes to a member understanding their responsibilities, ensuring things are getting done and that there is no repetition in completing tasks.
 We agree to....</em>
-<div style="outline: 1px solid rgb(255, 255, 255)">
-    <p style="padding: 5px">
-        have/attend regular meetings, at least once a week, while having regular discussions over messaging apps. Messages regarding group project details should be responded to in a timely manner; within 36 hours ideally. Tasks will be listed in a Linear board, where members can claim and update the status on any task they have been assigned/have chosen. This way, no member will accidentally work on the same thing at the same time. At a more higher level, we will discuss beforehand during team meetings/chats about who will do what, with more details able to be discussed as the time to implement takes place.
-    </p>
-</div>
+
+have/attend regular meetings, at least once a week, while having regular discussions over messaging apps. Messages regarding group project details should be responded to in a timely manner; within 36 hours ideally. Tasks will be listed in a Linear board, where members can claim and update the status on any task they have been assigned/have chosen. This way, no member will accidentally work on the same thing at the same time. At a more higher level, we will discuss beforehand during team meetings/chats about who will do what, with more details able to be discussed as the time to implement takes place.
+
 
 #
 
@@ -59,10 +51,6 @@ Who set it up, and confirmation that every member has access
 How often members will commit and push their work
 We agree to...</em>
 
-<div style="outline: 1px solid rgb(255, 255, 255)">
-    <p style="padding: 5px">
-        Github. https://github.com/bruhCoVr/mysh<br>
-        Vladimir has set up the github repository, and we have all confirmed access to it.<br>
-        We agree to push work on a regular basis, where pull requests will consist of many smaller chunks of a larger feature branch, which will then be pulled into the main branch
-    </p>
-</div>
+**Github:** https://github.com/bruhCoVr/mysh\
+Vladimir has set up the github repository, and we have all confirmed access to it.\
+We agree to push work on a regular basis, where pull requests will consist of many smaller chunks of a larger feature branch, which will then be pulled into the main branch.
