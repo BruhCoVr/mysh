@@ -77,5 +77,5 @@ weekly group check-ins to ensure everyone is kept up to date with their schedule
 | Team Member's Name | Team Member's Initials (acting as signature) |
 | --- | --- |
 | Ty Wagner | TW |
-| NAME1 | SIG1 |
+| Tai Shishiba | TS |
 | NAME2 | SIG2 |
