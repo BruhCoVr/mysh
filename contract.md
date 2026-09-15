@@ -78,4 +78,4 @@ weekly group check-ins to ensure everyone is kept up to date with their schedule
 | --- | --- |
 | Ty Wagner | TW |
 | Tai Shishiba | TS |
-| NAME2 | SIG2 |
+| Vladimir Grinfelds-Ventura | VGV |
