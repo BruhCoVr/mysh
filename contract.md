@@ -47,7 +47,7 @@ Who set it up, and confirmation that every member has access.\
 How often members will commit and push their work.\
 We agree to...</em>
 
-**Github:** https://github.com/bruhCoVr/mysh \
+**Github:** <a href=https://github.com/bruhCoVr/mysh>https://github.com/bruhCoVr/mysh</a> \
 Vladimir has set up the github repository, and we have all confirmed access to it.\
 We agree to push work on a regular basis, where pull requests will consist of many smaller chunks of a larger feature branch, which will then be pulled into the main branch.\
 The syntax will look something like:
