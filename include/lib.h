@@ -4,6 +4,7 @@
 #include <stddef.h>
 #include <unistd.h>
 
+#include <constants.h>
 
 int str_len(const char *s);
 

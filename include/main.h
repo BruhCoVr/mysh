@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <errno.h>
 
+#include <constants.h>
 #include <lib.h>
 
 int readline(char *buffer);
