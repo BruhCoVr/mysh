@@ -94,6 +94,23 @@ ssize_t print_ssize_t(const ssize_t value);
     default: print_str \
 )(VALUE)
 
+/**
+ * @brief Compares two null-terminated strings.
+ *
+ * @param str1 The first string to compare.
+ * @param str2 The second string to compare.
+ *
+ * @return 1 if the strings are equal, 0 otherwise
+ */
 int strcmp(const char *str1, const char *str2);
+
+/**
+ * @brief Prints a null-terminated string to the standard output (stdout) followed by a newline character.
+ *
+ * @param s The string to print.
+ *
+ * @return Number of bytes written, or -1 on error.
+ */
+int println(const char *s);
 
 #endif

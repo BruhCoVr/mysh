@@ -144,3 +144,19 @@ int strcmp(const char *str1, const char *str2) {
 
     return str1[i1] == str2[i2];
 }
+
+int println(const char *s) {
+    ssize_t bytes_written = print(s);
+    
+    if (bytes_written == ERROR) {
+        return ERROR; 
+    }
+
+    ssize_t newline_written = write(STDOUT_FD, "\n", 1);
+    
+    if (newline_written == ERROR) {
+        return ERROR; 
+    }
+
+    return bytes_written + newline_written;
+}
