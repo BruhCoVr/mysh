@@ -111,6 +111,15 @@ int strcmp(const char *str1, const char *str2);
  *
  * @return Number of bytes written, or -1 on error.
  */
-int println(const char *s);
+ssize_t println(const char *s);
+
+/**
+ * @brief Copies a null-terminated string from the source to the destination.
+ * 
+ * @param dest The destination buffer where the string will be copied.
+ * @param src The source string to copy.
+ */
+void str_cpy(char *dest, const char *src);
+
 
 #endif

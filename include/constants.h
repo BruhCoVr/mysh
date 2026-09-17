@@ -8,6 +8,9 @@
 
 // Arbitrary 256 command cap
 #define MAX_BUFFER_SIZE 256
+// Related token size cap
+#define MAX_TOKENS 256
+#define MAX_TOKEN_SIZE 256
 
 // Numbers will be max 20 digits long + 1 for the null terminator
 #define ITOA_BUFFER_SIZE 21

@@ -145,7 +145,7 @@ int strcmp(const char *str1, const char *str2) {
     return str1[i1] == str2[i2];
 }
 
-int println(const char *s) {
+ssize_t println(const char *s) {
     ssize_t bytes_written = print(s);
     
     if (bytes_written == ERROR) {
@@ -159,4 +159,15 @@ int println(const char *s) {
     }
 
     return bytes_written + newline_written;
+}
+
+void str_cpy(char *dest, const char *src) {
+    int i = 0;
+
+    while (src[i] != NULL_TERMINATOR) {
+        dest[i] = src[i];
+        i++;
+    }
+
+    dest[i] = NULL_TERMINATOR;
 }
