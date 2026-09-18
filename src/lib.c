@@ -94,7 +94,7 @@ char* itoa_ssize_t(ssize_t value, char* str) {
 }
 
 
-ssize_t print_str(const char *s) {
+int print_str(const char *s) {
     int len = str_len(s);
     ssize_t bytes_written = write(STDOUT_FD, s, len);
     
@@ -102,10 +102,10 @@ ssize_t print_str(const char *s) {
         return ERROR; 
     }
 
-    return bytes_written;    
+    return SUCCESS;
 }
 
-ssize_t print_int(const int value) {
+int print_int(const int value) {
     char buffer[ITOA_BUFFER_SIZE];
 
     itoa_int(value, buffer);
@@ -113,7 +113,7 @@ ssize_t print_int(const int value) {
     return print(buffer);
 }
 
-ssize_t print_size_t(const size_t value) {
+int print_size_t(const size_t value) {
     char buffer[ITOA_BUFFER_SIZE];
 
     itoa_size_t(value, buffer);
@@ -121,7 +121,7 @@ ssize_t print_size_t(const size_t value) {
     return print(buffer);
 }
 
-ssize_t print_ssize_t(const ssize_t value) {
+int print_ssize_t(const ssize_t value) {
     char buffer[ITOA_BUFFER_SIZE];
 
     itoa_ssize_t(value, buffer);
@@ -145,20 +145,16 @@ int strcmp(const char *str1, const char *str2) {
     return str1[i1] == str2[i2];
 }
 
-ssize_t println(const char *s) {
-    ssize_t bytes_written = print(s);
-    
-    if (bytes_written == ERROR) {
-        return ERROR; 
+int println(const char *s) {
+    if (print(s) == ERROR) {
+        return ERROR;
     }
 
-    ssize_t newline_written = write(STDOUT_FD, "\n", 1);
-    
-    if (newline_written == ERROR) {
-        return ERROR; 
+    if (write(STDOUT_FD, "\n", 1) == ERROR) {
+        return ERROR;
     }
 
-    return bytes_written + newline_written;
+    return SUCCESS;
 }
 
 void str_cpy(char *dest, const char *src) {

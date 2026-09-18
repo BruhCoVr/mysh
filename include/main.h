@@ -8,56 +8,39 @@
 
 #include <unistd.h>
 #include <errno.h>
+#include <stdlib.h>
 
 #include <constants.h>
 #include <lib.h>
 #include <types.h>
+#include <input.h>
+#include <token.h>
 
 /**
- * @brief Reads a line of input from stdin into the provided buffer.
- * Places at most MAX_BUFFER_SIZE characters into the buffer.
- * Null terminates the buffer, omiting the newline character.
+ * @brief prompts the user for input and reads it into the provided buffer
+ * @param buffer the buffer to read input into
  * 
- * @param buffer The buffer to store the input.
- * 
- * @return The number of characters read, or -1 on error.
+ * @return the number of bytes read, or ERROR on failure
  */
-int readline(char *buffer);
+int prompt_input(char *buffer);
 
 /**
- * @brief Ensures the input buffer has no leftover characters after reading MAX_BUFFER_SIZE characters.
- * Clears characters out until a newline character is encountered.
+ * @brief handles the input tokens and executes the appropriate command
+ * @param tokens the array of tokens to handle
+ * @param token_count the number of tokens in the array
  * 
- * @return void
+ * @return 0 on success, or ERROR on failure.
  */
-void flush_buffer();
+int handle_input(Tokens tokens, int token_count);
 
 /**
- * @brief Converts the input buffer to a null-terminated string.
- * Will either replace the newline character or the last character in the buffer.
+ * @brief echoes the input tokens to the terminal
+ * @param tokens the array of tokens to echo
+ * @param token_count the number of tokens in the array
  * 
- * @param input_buffer The buffer containing the input.
- * @param bytes_read The number of bytes read into the buffer.
- * @return void
+ * @return 0 on success, or ERROR on failure.
  */
-void stringify_buffer(char* input_buffer, int bytes_read);
+int echo_input(Tokens tokens, int token_count);
 
-/**
- * @brief Tokenizes the input string into an array of tokens.
- * 
- * @param input The null-terminated string to tokenize.
- * @param tokens The array to store the resulting tokens.
- * 
- * @return The number of tokens generated, or -1 on error.
- */
-int tokenize_input(char *input, Tokens tokens);
-
-/**
- * @brief Prints the input string to stdout, followed by a newline.
- * 
- * @param input The null-terminated string to print.
- * @return ssize_t The number of bytes written, or -1 on error.
- */
-ssize_t echo_input(char *input);
 
 #endif
