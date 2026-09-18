@@ -3,7 +3,7 @@
 int str_len(const char *s) {
     int len = 0;
 
-    while (s[len] != '\0') {
+    while (s[len] != NULL_TERMINATOR) {
         len++;
     }
 
@@ -15,10 +15,10 @@ char* reverse(char* str) {
     char* end = str;
 
     // Move the end pointer to the last character
-    while (*end != '\0') {
+    while (*end != NULL_TERMINATOR) {
         end++;
     }
-    end--; // Move back to the last character
+    end--;
 
     // Swap characters from start and end until they meet in the middle
     while (start < end) {
@@ -54,8 +54,7 @@ char* itoa_int(int value, char* str) {
     if (is_negative) {
         *ptr++ = '-';
     }
-
-    *ptr = '\0';
+    *ptr = NULL_TERMINATOR;
 
     return reverse(str);
 } 
@@ -68,7 +67,7 @@ char* itoa_size_t(size_t value, char* str) {
         value /= 10;
     } while (value > 0);
 
-    *ptr = '\0';
+    *ptr = NULL_TERMINATOR;
 
     return reverse(str);
 }
@@ -76,10 +75,10 @@ char* itoa_size_t(size_t value, char* str) {
 char* itoa_ssize_t(ssize_t value, char* str) {
     char* ptr = str;
 
-    if (value == -1) {
+    if (value == ERROR) {
         ptr[0] = '-';
         ptr[1] = '1';
-        ptr[2] = '\0';
+        ptr[2] = NULL_TERMINATOR;
 
         return str;
     }    
@@ -89,7 +88,7 @@ char* itoa_ssize_t(ssize_t value, char* str) {
         value /= 10;
     } while (value > 0);
 
-    *ptr = '\0';
+    *ptr = NULL_TERMINATOR;
 
     return reverse(str);
 }
@@ -97,18 +96,17 @@ char* itoa_ssize_t(ssize_t value, char* str) {
 
 ssize_t print_str(const char *s) {
     int len = str_len(s);
-    ssize_t bytes_written = write(1, s, len);
+    ssize_t bytes_written = write(STDOUT_FD, s, len);
     
-    // change this to constant later
-    if (bytes_written == -1) {
-        return -1; 
+    if (bytes_written == ERROR) {
+        return ERROR; 
     }
 
     return bytes_written;    
 }
 
 ssize_t print_int(const int value) {
-    char buffer[21];
+    char buffer[ITOA_BUFFER_SIZE];
 
     itoa_int(value, buffer);
     
@@ -116,7 +114,7 @@ ssize_t print_int(const int value) {
 }
 
 ssize_t print_size_t(const size_t value) {
-    char buffer[21];
+    char buffer[ITOA_BUFFER_SIZE];
 
     itoa_size_t(value, buffer);
     
@@ -124,7 +122,7 @@ ssize_t print_size_t(const size_t value) {
 }
 
 ssize_t print_ssize_t(const ssize_t value) {
-    char buffer[21];
+    char buffer[ITOA_BUFFER_SIZE];
 
     itoa_ssize_t(value, buffer);
     
@@ -135,9 +133,9 @@ int strcmp(const char *str1, const char *str2) {
     int i1 = 0;
     int i2 = 0;
 
-    while (str1[i1] != '\0' && str2[i2] != '\0') {
+    while (str1[i1] != NULL_TERMINATOR && str2[i2] != NULL_TERMINATOR) {
         if (str1[i1] != str2[i2]) {
-            return 0;
+            return FALSE;
         }
 
         i1++;
@@ -145,4 +143,31 @@ int strcmp(const char *str1, const char *str2) {
     }
 
     return str1[i1] == str2[i2];
+}
+
+ssize_t println(const char *s) {
+    ssize_t bytes_written = print(s);
+    
+    if (bytes_written == ERROR) {
+        return ERROR; 
+    }
+
+    ssize_t newline_written = write(STDOUT_FD, "\n", 1);
+    
+    if (newline_written == ERROR) {
+        return ERROR; 
+    }
+
+    return bytes_written + newline_written;
+}
+
+void str_cpy(char *dest, const char *src) {
+    int i = 0;
+
+    while (src[i] != NULL_TERMINATOR) {
+        dest[i] = src[i];
+        i++;
+    }
+
+    dest[i] = NULL_TERMINATOR;
 }
