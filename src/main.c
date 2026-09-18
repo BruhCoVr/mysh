@@ -86,37 +86,35 @@ void reset_token_buffer(char *token_buffer, int *token_index) {
     *token_index = 0;
 }
 
-void add_token_to_buffer(char *token_buffer, char c, int token_index) {
+void add_char_to_buffer(char *token_buffer, char c, int token_index) {
     token_buffer[token_index] = c;
     token_buffer[token_index + 1] = NULL_TERMINATOR;
 }
 
 int tokenize_input(char *input, Tokens tokens) {
+    int i = 0;
     int token_count = 0;
-
+    int token_buffer_index = 0;
     Token token_buffer = "";
-    int token_buffer_length = 0;
 
-    char c = *input;
-    while(c != NULL_TERMINATOR) {
-        if (c == ' ') {
-            if (token_buffer_length != 0) {
-                insert_token(tokens, token_buffer, token_count);
-                reset_token_buffer(token_buffer, &token_buffer_length);
-
-                token_count++;
-            }
-        } else {
-            add_token_to_buffer(token_buffer, c, token_buffer_length);
-            token_buffer_length++;
+    while(input[i] != NULL_TERMINATOR) {
+        char c = input[i++];    
+        
+        if (c != ' ') {
+            add_char_to_buffer(token_buffer, c, token_buffer_index++);
+            continue;
+        } 
+        
+        if (token_buffer_index == 0) {
+            continue;
         }
-
-        c = *(++input);
+        
+        insert_token(tokens, token_buffer, token_count++);
+        reset_token_buffer(token_buffer, &token_buffer_index);
     }
 
-    if (token_buffer_length != 0) {
-        insert_token(tokens, token_buffer, token_count);
-        token_count++;
+    if (token_buffer_index > 0) {
+        insert_token(tokens, token_buffer, token_count++);
     }
 
     return token_count;
