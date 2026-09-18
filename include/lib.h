@@ -63,29 +63,29 @@ char* itoa_ssize_t(ssize_t value, char* str);
 /**
  * @overload
  */
-ssize_t print_str(const char *s);
+int print_str(const char *s);
 
 /**
  * @overload
  */
-ssize_t print_int(const int value);
+int print_int(const int value);
 
 /**
  * @overload
  */
-ssize_t print_size_t(const size_t value);
+int print_size_t(const size_t value);
 
 /**
  * @overload
  */
-ssize_t print_ssize_t(const ssize_t value);
+int print_ssize_t(const ssize_t value);
 
 /**
  * @brief Prints a value to the standard output (stdout).
  * 
  * @param VALUE The value to print.
  * 
- * @return The number of bytes written, or -1 on error.
+ * @return 0 on success, or -1 on error.
  */
 #define print(VALUE) _Generic((VALUE), \
     int: print_int, \
@@ -109,9 +109,9 @@ int strcmp(const char *str1, const char *str2);
  *
  * @param s The string to print.
  *
- * @return Number of bytes written, or -1 on error.
+ * @return 0 on success, or -1 on error.
  */
-ssize_t println(const char *s);
+int println(const char *s);
 
 /**
  * @brief Copies a null-terminated string from the source to the destination.
