@@ -1,3 +1,4 @@
+#include <stdint.h>
 #include "tlib.h"
 #include <stdio.h>
 #include <string.h>

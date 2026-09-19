@@ -1,3 +1,4 @@
+#include <stdint.h>
 #include "../include/lib.h"
 #include "../tlib/tlib.h"
 #include <stdio.h>
@@ -24,42 +25,40 @@ void test_reverse() {
 }
 
 //test negative numbers and numbers larger than 20 characters
+//i dont think we can checkt numbers larger than 20 due to the biggest value c can take in
 void test_itoa_int(void) {
     int num = 2345;
     int neg_num = -9436;
-    int large_num = 1234567891234567892021;
+    //int large_num = 1234567891234567892021;
     char buffer[ITOA_BUFFER_SIZE];
 
-    printf("Testing integer to string: ");
     TEST_ASSERT_EQUAL_CHAR_ARR("2345", itoa(num, buffer));
     TEST_ASSERT_EQUAL_CHAR_ARR("-9436", itoa(neg_num, buffer));
-    TEST_ASSERT_EQUAL_CHAR_ARR("1234567891234567892021", itoa(large_num, buffer));
+    //TEST_ASSERT_EQUAL_CHAR_ARR("1234567891234567892021", itoa(large_num, buffer));
 
 }
 
 void test_itoa_sizet(void) {
     size_t num = 2345;
     int neg_num = -9436;
-    int large_num = 1234567891234567892021;
+    //int large_num = 1234567891234567892021;
     char buffer[ITOA_BUFFER_SIZE];
 
-    printf("Testing size t to string: ");
     TEST_ASSERT_EQUAL_CHAR_ARR("2345", itoa(num, buffer));
     TEST_ASSERT_EQUAL_CHAR_ARR("-9436", itoa(neg_num, buffer));
-    TEST_ASSERT_EQUAL_CHAR_ARR("1234567891234567892021", itoa(large_num, buffer));
+    //TEST_ASSERT_EQUAL_CHAR_ARR("1234567891234567892021", itoa(large_num, buffer));
 
 }
 
 void test_itoa_ssizet(void) {
     ssize_t num = 2345;
     int neg_num = -9436;
-    int large_num = 1234567891234567892021;
+    //int large_num = 1234567891234567892021;
     char buffer[ITOA_BUFFER_SIZE];
 
-    printf("Testing ssize t to string: ");
     TEST_ASSERT_EQUAL_CHAR_ARR("2345", itoa(num, buffer));
     TEST_ASSERT_EQUAL_CHAR_ARR("-9436", itoa(neg_num, buffer));
-    TEST_ASSERT_EQUAL_CHAR_ARR("1234567891234567892021", itoa(large_num, buffer));
+    //TEST_ASSERT_EQUAL_CHAR_ARR("1234567891234567892021", itoa(large_num, buffer));
 
 }
 
@@ -73,5 +72,8 @@ int main(void) {
     RUN_TEST(test_str_len);
     RUN_TEST(test_str_cmp);
     RUN_TEST(test_reverse);
+    RUN_TEST(test_itoa_int);
+    RUN_TEST(test_itoa_sizet);
+    RUN_TEST(test_itoa_ssizet);
     return 0;
 }
