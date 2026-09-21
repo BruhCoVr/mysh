@@ -2,6 +2,7 @@
 #include "../include/lib.h"
 #include "../tlib/tlib.h"
 #include <stdio.h>
+#include <string.h>
 
 void test_str_len() {
     TEST_ASSERT_EQUAL_UINT((uint8_t) 0, (uint8_t) str_len(""));
@@ -47,7 +48,6 @@ void test_itoa_sizet(void) {
     TEST_ASSERT_EQUAL_CHAR_ARR("2345", itoa(num, buffer));
     TEST_ASSERT_EQUAL_CHAR_ARR("-9436", itoa(neg_num, buffer));
     //TEST_ASSERT_EQUAL_CHAR_ARR("1234567891234567892021", itoa(large_num, buffer));
-
 }
 
 void test_itoa_ssizet(void) {
@@ -59,15 +59,46 @@ void test_itoa_ssizet(void) {
     TEST_ASSERT_EQUAL_CHAR_ARR("2345", itoa(num, buffer));
     TEST_ASSERT_EQUAL_CHAR_ARR("-9436", itoa(neg_num, buffer));
     //TEST_ASSERT_EQUAL_CHAR_ARR("1234567891234567892021", itoa(large_num, buffer));
-
 }
 
-/*
 void test_digit_to_char() {
-
+    char expected_digits[3] = {'0' + 8 ,'0' + 1, '0' + 2};
+    TEST_ASSERT_EQUAL_CHAR(expected_digits[0], '8');
+    TEST_ASSERT_EQUAL_CHAR(expected_digits[1], '1');
+    TEST_ASSERT_EQUAL_CHAR(expected_digits[2], '2');
 }
 
-*/
+void test_print_str() {
+    /**
+     * Quick note on the other print functions such as print_size_t(const size_t value)
+     * It is not necessary to test those as they all call functions that are tested
+     * before this one.
+     */
+    const char* str = "This is a test string\n";
+    const char* str1 = "Now another test string with some fun #)(&*^& characters and 1234134 numbers\n";
+    int8_t result = print_str(str);
+    int8_t result1 = print_str(str1);
+    TEST_ASSERT_EQUAL_INT(0, result);
+    TEST_ASSERT_EQUAL_INT(0, result1);
+}
+
+void test_println() {
+    const char* str = "This is a test string";
+    const char* str1 = "Now another test string with some fun #)(&*^& characters and 1234134 numbers";
+    int8_t result = println(str);
+    int8_t result1 = println(str1);
+    TEST_ASSERT_EQUAL_INT(0, result);
+    TEST_ASSERT_EQUAL_INT(0, result1);
+}
+
+void test_str_cpy() {
+    const char* str = "Test of strcpy\n";
+    char dest[30];
+
+    str_cpy(dest, str);
+    TEST_ASSERT_EQUAL_INT(0, strcmp(str, dest));
+}
+
 int main(void) {
     RUN_TEST(test_str_len);
     RUN_TEST(test_str_cmp);
@@ -75,5 +106,9 @@ int main(void) {
     RUN_TEST(test_itoa_int);
     RUN_TEST(test_itoa_sizet);
     RUN_TEST(test_itoa_ssizet);
+    RUN_TEST(test_digit_to_char);
+    RUN_TEST(test_print_str);
+    RUN_TEST(test_println);
+    RUN_TEST(test_str_cpy);
     return 0;
 }
