@@ -39,6 +39,11 @@ void assert_equal_int32(int32_t expected, int32_t actual, const char* file, int 
 
 void assert_equal_char_arr(const char* expected, const char* actual, const char* file, int line);
 
+#define TEST_ASSERT_EQUAL_CHAR(expected, actual) \
+    assert_equal_char((expected), (actual), __FILE__, __LINE__)
+    
+void assert_equal_char(const char expected, const char actual, const char* file, int line);
+
 #define RUN_TEST(test_function) do { \
     int prev_fails = test_failure_count; \
     printf("Running %s ... ", #test_function); \

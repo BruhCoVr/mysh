@@ -62,3 +62,11 @@ void assert_equal_char_arr(const char* expected, const char* actual, const char*
         test_failure_count++;
     }
 }
+
+void assert_equal_char(const char expected, const char actual, const char* file, int line) {
+    if (expected != actual) {
+        printf(ANSI_COLOR_RED "[ASSERTION FAILED: Char Mismatch] in %s at line %d\n" ANSI_COLOR_RESET, file, line);
+        printf("\tExpected " ANSI_COLOR_YELLOW "%d" ANSI_COLOR_RESET " and got " ANSI_COLOR_YELLOW "%d\n" ANSI_COLOR_RESET, expected, actual);
+        test_failure_count++;
+    }
+}
