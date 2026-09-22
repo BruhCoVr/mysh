@@ -31,35 +31,30 @@ void test_reverse(void) {
 void test_itoa_int(void) {
     int num = 2345;
     int neg_num = -9436;
-    //int large_num = 1234567891234567892021;
     char buffer[ITOA_BUFFER_SIZE];
 
     TEST_ASSERT_EQUAL_CHAR_ARR("2345", itoa(num, buffer));
     TEST_ASSERT_EQUAL_CHAR_ARR("-9436", itoa(neg_num, buffer));
-    //TEST_ASSERT_EQUAL_CHAR_ARR("1234567891234567892021", itoa(large_num, buffer));
-
 }
 
 void test_itoa_sizet(void) {
     size_t num = 2345;
-    int neg_num = -9436;
-    //int large_num = 1234567891234567892021;
+    size_t large_num = 1234567891234567892;
     char buffer[ITOA_BUFFER_SIZE];
 
     TEST_ASSERT_EQUAL_CHAR_ARR("2345", itoa(num, buffer));
-    TEST_ASSERT_EQUAL_CHAR_ARR("-9436", itoa(neg_num, buffer));
-    //TEST_ASSERT_EQUAL_CHAR_ARR("1234567891234567892021", itoa(large_num, buffer));
+    TEST_ASSERT_EQUAL_CHAR_ARR("1234567891234567892", itoa(large_num, buffer));
 }
 
 void test_itoa_ssizet(void) {
     ssize_t num = 2345;
-    int neg_num = -9436;
-    //int large_num = 1234567891234567892021;
+    ssize_t neg_num = -1;
+    ssize_t large_num = 1234567891234567892;
     char buffer[ITOA_BUFFER_SIZE];
 
     TEST_ASSERT_EQUAL_CHAR_ARR("2345", itoa(num, buffer));
-    TEST_ASSERT_EQUAL_CHAR_ARR("-9436", itoa(neg_num, buffer));
-    //TEST_ASSERT_EQUAL_CHAR_ARR("1234567891234567892021", itoa(large_num, buffer));
+    TEST_ASSERT_EQUAL_CHAR_ARR("-1", itoa(neg_num, buffer));
+    TEST_ASSERT_EQUAL_CHAR_ARR("1234567891234567892", itoa(large_num, buffer));
 }
 
 void test_digit_to_char(void) {
