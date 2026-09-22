@@ -11,6 +11,10 @@
 // Related token size cap
 #define MAX_TOKENS 256
 #define MAX_TOKEN_SIZE 256
+#define MAX_ARGS 128
+
+// Custom heap size for "dynamic" memory managements
+#define HEAP_SIZE 10000
 
 // Numbers will be max 20 digits long + 1 for the null terminator
 #define ITOA_BUFFER_SIZE 21

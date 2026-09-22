@@ -7,6 +7,7 @@ CFLAGS  = -I./include -Wall -Wextra
 
 SRCS = $(wildcard $(SRC)/*.c)
 OBJS = $(SRCS:$(SRC)/%.c=$(BIN)/%.o)
+TARGET = mysh
 
 TEST_SRCS = $(wildcard $(TESTS)/*.c)
 TEST_OBJS = $(TEST_SRCS:$(TESTS)/%.c=$(BIN)/%.o)
