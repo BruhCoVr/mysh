@@ -102,7 +102,7 @@ int print_ssize_t(const ssize_t value);
  *
  * @return 1 if the strings are equal, 0 otherwise
  */
-int str_cmp(const char *str1, const char *str2);
+int str_eq(const char *str1, const char *str2);
 
 /**
  * @brief Prints a null-terminated string to the standard output (stdout) followed by a newline character.
