@@ -6,7 +6,7 @@
 #ifndef JOBS_H
 #define JOBS_H
 
-#define MAX_ARGS 128
+#include <constants.h>
 
 /**
  * @brief Represents a command as an array of string arguments.
