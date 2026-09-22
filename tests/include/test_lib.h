@@ -2,7 +2,7 @@
 #define TEST_LIB_H
 
 void test_str_len(void);
-void test_str_cmp(void);
+void test_str_eq(void);
 void test_reverse(void);
 void test_itoa_int(void);
 void test_itoa_sizet(void);

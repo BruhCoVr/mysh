@@ -129,7 +129,7 @@ int print_ssize_t(const ssize_t value) {
     return print(buffer);
 }
 
-int str_cmp(const char *str1, const char *str2) {
+int str_eq(const char *str1, const char *str2) {
     int i1 = 0;
     int i2 = 0;
 
