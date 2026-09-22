@@ -19,7 +19,7 @@
  * 
  * @return The length of the string (number of characters before the null terminator).
  */
-int str_len(const char *s);
+unsigned int str_len(const char *s);
 
 /**
  * @brief Reverses a null-terminated string in place.
