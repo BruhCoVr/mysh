@@ -2,6 +2,7 @@
 #define TLIB_H
 
 #include <unistd.h>
+#include <stdio.h>
 
 #define TRUE 1
 #define FALSE 0
