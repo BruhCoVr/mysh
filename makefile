@@ -5,7 +5,7 @@ CFLAGS  = -I./include -Wall -Wextra
 
 SRCS = $(wildcard $(SRC)/*.c)
 OBJS = $(SRCS:$(SRC)/%.c=$(BIN)/%.o)
-TARGET = $(BIN)/mysh
+TARGET = mysh
 
 all: $(TARGET)
 
