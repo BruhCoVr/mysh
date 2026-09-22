@@ -1,10 +1,10 @@
 /**
- * @file token.h
+ * @file tokenizer.h
  * @brief Functions for splitting input into tokens
  */
 
-#ifndef TOKEN_H
-#define TOKEN_H
+#ifndef TOKENIZER_H
+#define TOKENIZER_H
 
 #include <constants.h>
 #include <lib.h>

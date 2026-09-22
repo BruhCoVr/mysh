@@ -1,4 +1,4 @@
-#include <token.h>
+#include <tokenizer.h>
 
 void insert_token(Tokens tokens, const char *token, int token_count) {
     str_cpy(tokens[token_count], token);
@@ -13,7 +13,7 @@ void add_char_to_buffer(char *token_buffer, char c, int token_index) {
     token_buffer[token_index] = c;
     token_buffer[token_index + 1] = NULL_TERMINATOR;
 }
-
+    
 int tokenize_input(char *input, Tokens tokens) {
     int i = 0;
     int token_count = 0;
