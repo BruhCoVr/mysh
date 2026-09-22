@@ -14,15 +14,7 @@
 #include <lib.h>
 #include <types.h>
 #include <input.h>
-#include <token.h>
-
-/**
- * @brief prompts the user for input and reads it into the provided buffer
- * @param buffer the buffer to read input into
- * 
- * @return the number of bytes read, or ERROR on failure
- */
-int prompt_input(char *buffer);
+#include <tokenizer.h>
 
 /**
  * @brief handles the input tokens and executes the appropriate command
