@@ -61,40 +61,6 @@ char* itoa_ssize_t(ssize_t value, char* str);
     
 
 /**
- * @overload
- */
-int print_str(const char *s);
-
-/**
- * @overload
- */
-int print_int(const int value);
-
-/**
- * @overload
- */
-int print_size_t(const size_t value);
-
-/**
- * @overload
- */
-int print_ssize_t(const ssize_t value);
-
-/**
- * @brief Prints a value to the standard output (stdout).
- * 
- * @param VALUE The value to print.
- * 
- * @return 0 on success, or -1 on error.
- */
-#define print(VALUE) _Generic((VALUE), \
-    int: print_int, \
-    size_t: print_size_t, \
-    ssize_t: print_ssize_t, \
-    default: print_str \
-)(VALUE)
-
-/**
  * @brief Compares two null-terminated strings.
  *
  * @param str1 The first string to compare.
@@ -103,15 +69,6 @@ int print_ssize_t(const ssize_t value);
  * @return 1 if the strings are equal, 0 otherwise
  */
 int str_eq(const char *str1, const char *str2);
-
-/**
- * @brief Prints a null-terminated string to the standard output (stdout) followed by a newline character.
- *
- * @param s The string to print.
- *
- * @return 0 on success, or -1 on error.
- */
-int println(const char *s);
 
 /**
  * @brief Copies a null-terminated string from the source to the destination.
