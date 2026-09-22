@@ -1,7 +1,7 @@
 #include "lib.h"
 
-int str_len(const char *s) {
-    int len = 0;
+unsigned int str_len(const char *s) {
+    unsigned int len = 0;
 
     while (s[len] != NULL_TERMINATOR) {
         len++;
@@ -95,7 +95,7 @@ char* itoa_ssize_t(ssize_t value, char* str) {
 
 
 int print_str(const char *s) {
-    int len = str_len(s);
+    unsigned int len = str_len(s);
     ssize_t bytes_written = write(STDOUT_FD, s, len);
     
     if (bytes_written == ERROR) {
