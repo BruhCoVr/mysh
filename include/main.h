@@ -15,6 +15,7 @@
 #include <types.h>
 #include <input.h>
 #include <tokenizer.h>
+#include <jobs.h>
 
 /**
  * @brief handles the input tokens and executes the appropriate command
@@ -23,7 +24,7 @@
  * 
  * @return 0 on success, or ERROR on failure.
  */
-int handle_input(Tokens tokens, int token_count);
+int handle_input(struct Command command, int token_count);
 
 /**
  * @brief echoes the input tokens to the terminal
@@ -32,7 +33,7 @@ int handle_input(Tokens tokens, int token_count);
  * 
  * @return 0 on success, or ERROR on failure.
  */
-int echo_input(Tokens tokens, int token_count);
+int echo_input(struct Command command, int token_count);
 
 
 #endif
