@@ -6,6 +6,8 @@
 #ifndef JOBS_H
 #define JOBS_H
 
+#include <constants.h>
+
 /**
  * @brief Represents a command as an array of string arguments.
  * 
