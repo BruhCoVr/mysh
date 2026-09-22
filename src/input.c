@@ -35,11 +35,11 @@ int flush_buffer(int is_buffer_empty) {
     }
     
     char c;
-    ssize_t isBufferFull = read(0, &c, 1);
+    ssize_t isBufferFull = read(STDIN_FD, &c, 1);
     
     while(isBufferFull && c != LF) {
         
-        read(0, &c, 1);
+        read(STDIN_FD, &c, 1);
         if (isBufferFull == ERROR) {
             return ERROR;
         }

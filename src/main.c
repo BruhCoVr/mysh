@@ -51,7 +51,7 @@ int prompt_input(char *buffer) {
 int handle_input(Tokens tokens, int token_count) {
     int status = echo_input(tokens, token_count);    
     
-    if(strcmp(tokens[0], EXIT_COMMAND) == TRUE) {
+    if(str_cmp(tokens[0], EXIT_COMMAND) == TRUE) {
         return 1;
     }
 
