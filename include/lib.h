@@ -7,10 +7,9 @@
 #ifndef LIB_H
 #define LIB_H
 
-#include <stddef.h>
 #include <unistd.h>
-
 #include <constants.h>
+#include <sys/syscall.h>
 
 /**
  * @brief Returns the length of a null-terminated string.
@@ -78,5 +77,12 @@ int str_eq(const char *str1, const char *str2);
  */
 void str_cpy(char *dest, const char *src);
 
+/**
+ * @brief Kills ALL currently running threads of the program.
+ * 
+ * @param status The exit status code. Valid range: 0-255 
+ * 
+ */
+void exit(int status);
 
 #endif

@@ -120,3 +120,9 @@ void str_cpy(char *dest, const char *src) {
 
     dest[i] = NULL_TERMINATOR;
 }
+
+void exit(int status) {
+    // Mask as 0-255 are the only valid status exit codes
+    status = status & 255;
+    syscall(SYS_exit_group, status);
+}
