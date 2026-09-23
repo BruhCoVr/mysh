@@ -34,6 +34,7 @@
 #define FALSE 0
 // System calls return -1 on error
 #define ERROR -1
+#define NULLY 0
 #define SUCCESS 0
 #define EXIT 1
 

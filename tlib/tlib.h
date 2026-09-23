@@ -36,6 +36,7 @@ void assert_equal_int8(int8_t expected, int8_t actual, const char* file, int lin
 void assert_equal_int16(int16_t expected, int16_t actual, const char* file, int line);
 void assert_equal_int32(int32_t expected, int32_t actual, const char* file, int line);
 
+
 #define TEST_ASSERT_EQUAL_CHAR_ARR(expected, actual) \
     assert_equal_char_arr((expected), (actual), __FILE__, __LINE__)
 
