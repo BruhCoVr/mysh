@@ -7,6 +7,10 @@
 #define INPUT_H
 
 #include <unistd.h>
+#include <heap.h>
+#include <jobs.h>
+#include <lib.h>
+#include <tokenizer.h>
 
 /**
  * @brief Reads a line of input from stdin into the provided buffer.
@@ -37,5 +41,21 @@ int flush_buffer(int is_buffer_empty);
  * @return void
  */
 void stringify_buffer(char* input_buffer, int bytes_read);
+
+/**
+ * @brief prompts the user for input and reads it into the provided buffer as a string
+ * @param buffer the buffer to read input into
+ * 
+ * @return the number of bytes read, or ERROR on failure
+ */
+int prompt_input(char *buffer);
+
+/**
+ * @brief Reads a command from stdin and populates the provided Command structure.
+ * @param command The Command structure to populate.
+ * 
+ * @return The number of bytes read, or ERROR on failure.
+ */
+int get_command(struct Command *command);
 
 #endif

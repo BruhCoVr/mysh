@@ -11,6 +11,7 @@
 #include <unistd.h>
 
 #include <constants.h>
+#include <heap.h>
 
 /**
  * @brief Returns the length of a null-terminated string.
@@ -78,5 +79,20 @@ int str_eq(const char *str1, const char *str2);
  */
 void str_cpy(char *dest, const char *src);
 
+/** 
+ * @brief Handles an error by printing an error message and returning an error code.
+ * 
+ * @param msg The error message to print.
+ * @return -1
+ */
+int handle_error(const char *msg);
+
+/** 
+ * @brief Handles an error by printing an error message, cleaning up memory, and returning an error code.
+ * 
+ * @param msg The error message to print.
+ * @return -1
+ */
+int handle_error_with_memory_cleanup(const char *msg);
 
 #endif

@@ -8,8 +8,6 @@
 
 // Arbitrary 256 command cap
 #define MAX_BUFFER_SIZE 256
-// Related token size cap
-#define MAX_TOKENS 256
 #define MAX_TOKEN_SIZE 256
 #define MAX_ARGS 128
 
