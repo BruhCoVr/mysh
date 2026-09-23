@@ -19,6 +19,7 @@ int main() {
 
         token_count = tokenize_input(input_buffer, tokens);
 
+        // Redundant (?) Or is there a plan for this?
         if (token_count == 0) {
             continue;
         }
@@ -57,8 +58,6 @@ int handle_input(Tokens tokens, int token_count) {
 
     return status;
 }
-
-
 
 int echo_input(Tokens tokens, int token_count) {
     for (int i = 0; i < token_count; i++) {
