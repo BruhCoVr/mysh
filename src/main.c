@@ -3,20 +3,11 @@
 // int argc, char **argv
 int main() {
     struct Command command;
-
-    while (TRUE) {
+    get_command(&command, STDIN_FD);
+    
+    while (is_command_exit(command) == FALSE) {
+        run_command(&command);
         get_command(&command, STDIN_FD);
-        
-        int handle_input_statuts = handle_input(command, command.argc);
-        
-        if (handle_input_statuts == ERROR) {
-            handle_error("Error occurred while handling input");
-        }
-
-        if (handle_input_statuts == EXIT) {
-            println("Bye bye o/...");
-            return 0;
-        }
     }   
 
     return 0;
@@ -43,4 +34,17 @@ int echo_input(struct Command command, int token_count) {
     }
 
     return println("");
+}
+
+int run_command(struct Command *command){
+    int handle_input_statuts = handle_input(*command, command->argc);
+        
+    if (handle_input_statuts == ERROR) {
+        return handle_error("Error occurred while handling input");
+        }
+    return 0;
+}
+
+int is_command_exit(struct Command command){
+    return (str_eq(command.argv[0], EXIT_COMMAND) == TRUE);
 }
