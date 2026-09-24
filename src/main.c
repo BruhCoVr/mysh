@@ -5,7 +5,7 @@ int main() {
     struct Command command;
 
     while (TRUE) {
-        get_command(&command);
+        get_command(&command, STDIN_FD);
         
         int handle_input_statuts = handle_input(command, command.argc);
         
