@@ -11,6 +11,7 @@
 #include <jobs.h>
 #include <lib.h>
 #include <tokenizer.h>
+#include <output.h>
 
 /**
  * @brief Reads a line of input from stdin into the provided buffer.

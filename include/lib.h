@@ -12,6 +12,7 @@
 
 #include <constants.h>
 #include <heap.h>
+#include <output.h>
 
 /**
  * @brief Returns the length of a null-terminated string.
