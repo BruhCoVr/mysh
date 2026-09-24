@@ -13,7 +13,6 @@
 #include <constants.h>
 #include <lib.h>
 #include <output.h>
-#include <types.h>
 #include <input.h>
 #include <tokenizer.h>
 #include <jobs.h>
