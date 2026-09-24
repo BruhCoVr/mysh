@@ -35,5 +35,6 @@ int handle_input(struct Command command, int token_count);
  */
 int echo_input(struct Command command, int token_count);
 
-
+int run_command(struct Command *command);
+int is_command_exit(struct Command command);
 #endif
