@@ -23,9 +23,6 @@ int handle_input(struct Command command, int token_count) {
     return status;
 }
 
-
-
-
 int echo_input(struct Command command, int token_count) {
     for (int i = 0; i < token_count; i++) {
         if (print(command.argv[i]) == ERROR || print(" ") == ERROR) {
