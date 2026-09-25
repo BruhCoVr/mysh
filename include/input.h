@@ -54,13 +54,4 @@ void stringify_buffer(char* input_buffer, int bytes_read);
  */
 int prompt_input(char *buffer, int fd);
 
-/**
- * @brief Reads a command from the given fd and populates the provided Command structure.
- * @param command The Command structure to populate.
- * @param fd The file descriptor to read from.
- *
- * @return The number of bytes read, or ERROR on failure.
- */
-int get_command(struct Command *command, int fd);
-
 #endif
