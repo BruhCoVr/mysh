@@ -126,3 +126,16 @@ void exit(int status) {
     status = status & 255;
     syscall(SYS_exit_group, status);
 }
+
+int handle_error(const char *msg) {
+    if (str_eq(msg, "") == FALSE) {
+        println(msg);
+    }
+
+    return ERROR;
+}
+
+int handle_error_with_memory_cleanup(const char *msg) {
+    free_all();
+    return handle_error(msg);
+}

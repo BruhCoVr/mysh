@@ -12,17 +12,9 @@
 #include <constants.h>
 #include <lib.h>
 #include <output.h>
-#include <types.h>
 #include <input.h>
-#include <token.h>
-
-/**
- * @brief prompts the user for input and reads it into the provided buffer
- * @param buffer the buffer to read input into
- * 
- * @return the number of bytes read, or ERROR on failure
- */
-int prompt_input(char *buffer);
+#include <tokenizer.h>
+#include <jobs.h>
 
 /**
  * @brief handles the input tokens and executes the appropriate command
@@ -31,7 +23,7 @@ int prompt_input(char *buffer);
  * 
  * @return 0 on success, or ERROR on failure.
  */
-int handle_input(Tokens tokens, int token_count);
+int handle_input(struct Command command, int token_count);
 
 /**
  * @brief echoes the input tokens to the terminal
@@ -40,7 +32,21 @@ int handle_input(Tokens tokens, int token_count);
  * 
  * @return 0 on success, or ERROR on failure.
  */
-int echo_input(Tokens tokens, int token_count);
+int echo_input(struct Command command, int token_count);
 
+/**
+ * @brief runs the command specified by the input tokens
+ * @param command the command to run
+ * 
+ * @return 0 on success, or ERROR on failure.
+ */
+int run_command(struct Command *command);
 
+ /**
+ * @brief checks if the command is an exit command
+ * @param command the command to check
+ * 
+ * @return TRUE if the command is an exit command, FALSE otherwise.
+ */
+int is_command_exit(struct Command command);
 #endif
