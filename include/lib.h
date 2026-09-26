@@ -73,12 +73,31 @@ char* itoa_ssize_t(ssize_t value, char* str);
 int str_eq(const char *str1, const char *str2);
 
 /**
+ * @brief Compares two null-terminated strings up to a specified limit.
+ * 
+ * @param str1 The first string to compare.
+ * @param str2 The second string to compare.
+ * @param limit The maximum number of characters to compare.
+ * 
+ * @return 1 if the strings are equal up to the limit, 0 otherwise.
+ */
+int str_eq_limit(const char *str1, const char *str2, int limit);
+
+/**
  * @brief Copies a null-terminated string from the source to the destination.
  * 
  * @param dest The destination buffer where the string will be copied.
  * @param src The source string to copy.
  */
 void str_cpy(char *dest, const char *src);
+
+/**
+ * @brief Concatenates a null-terminated string to the end of another string.
+ * 
+ * @param dest The destination buffer where the string will be concatenated.
+ * @param src The source string to concatenate.
+ */
+void str_cat(char *dest, const char *src);
 
 /** 
  * @brief Handles an error by printing an error message and returning an error code.

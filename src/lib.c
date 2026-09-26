@@ -110,6 +110,22 @@ int str_eq(const char *str1, const char *str2) {
     return str1[i1] == str2[i2];
 }
 
+int str_eq_limit(const char *str1, const char *str2, int limit) {
+    int i1 = 0;
+    int i2 = 0;
+
+    while (i1 < limit) {
+        if (str1[i1] != str2[i2]) {
+            return FALSE;
+        }
+
+        i1++;
+        i2++;
+    }
+
+    return (i1 == limit || str1[i1] == NULL_TERMINATOR) && (i2 == limit || str2[i2] == NULL_TERMINATOR);
+}
+
 void str_cpy(char *dest, const char *src) {
     int i = 0;
 
@@ -119,6 +135,18 @@ void str_cpy(char *dest, const char *src) {
     }
 
     dest[i] = NULL_TERMINATOR;
+}
+
+void str_cat(char *dest, const char *src) {
+    int dest_len = str_len(dest);
+    int i = 0;
+
+    while (src[i] != NULL_TERMINATOR) {
+        dest[dest_len + i] = src[i];
+        i++;
+    }
+
+    dest[dest_len + i] = NULL_TERMINATOR;
 }
 
 int handle_error(const char *msg) {
