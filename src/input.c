@@ -2,47 +2,44 @@
 #include <constants.h>
 
 int readline(char *input_buffer, int fd) {
-    int i = 0;
+    int bytes_read = 0;
 
-    int is_buffer_empty = 0;
+    while(bytes_read < MAX_BUFFER_SIZE) {
+        ssize_t read_status = read(fd, &input_buffer[bytes_read], 1);
 
-    while(i < MAX_BUFFER_SIZE) {
-        ssize_t bytes_read = read(fd, &input_buffer[i], 1);
-
-        if (bytes_read == ERROR) {
+        if (read_status == ERROR) {
             return ERROR;
         }
 
-        if (input_buffer[i] == LF) {
-            is_buffer_empty = 1;
-            i++;
+        if (input_buffer[bytes_read] == LF) {
+            bytes_read++;
             break;
         }
 
-        i++;
+        bytes_read++;
     }
 
-    if (flush_buffer(is_buffer_empty, fd) == ERROR) {
+    if (flush_buffer(bytes_read, fd) == ERROR) {
         return ERROR;
     }
 
-    return i;
+    return bytes_read;
 }
 
-int flush_buffer(int is_buffer_empty, int fd) {
-    if (is_buffer_empty) {
+int flush_buffer(int bytes_read, int fd) {
+    if (bytes_read < MAX_BUFFER_SIZE) {
         return SUCCESS;
     }
 
     char c;
-    ssize_t isBufferFull = read(fd, &c, 1);
+    ssize_t read_status;
 
-    while(isBufferFull && c != LF) {
+    do {
+        read_status = read(fd, &c, 1);
+    } while (read_status > 0 && c != LF);
 
-        read(fd, &c, 1);
-        if (isBufferFull == ERROR) {
-            return ERROR;
-        }
+    if (read_status == ERROR) {
+        return ERROR;
     }
 
     return SUCCESS;
