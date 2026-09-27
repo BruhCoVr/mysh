@@ -18,7 +18,7 @@ void initialize_env() {
     for (int i = 0; environ[i] != NULL; i++) {
         if (!found_user && str_eq_limit(environ[i], "USER=", 5)) {
             str_cpy(env.user, environ[i] + 5);
-            found_user = 1;
+            found_user = TRUE;
         } else if (!found_home && str_eq_limit(environ[i], "HOME=", 5)) {
             str_cpy(env.home, environ[i] + 5);
             found_home = 1;
