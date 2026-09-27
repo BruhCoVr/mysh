@@ -30,7 +30,7 @@ void handle_child_process(struct Command *command) {
     }
 
     // this sets errno, we have to handle it properly somehow
-    int status = execv(absolute_path, command->argv);
+    int status = execve(absolute_path, command->argv, environ);
 
     if (status == ERROR) {
         handle_error_with_memory_cleanup("Error occurred while executing command");

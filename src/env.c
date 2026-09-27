@@ -1,7 +1,5 @@
 #include <env.h>
 
-extern char **environ;
-
 struct Env env = {
     .user = "",
     .home = "",
