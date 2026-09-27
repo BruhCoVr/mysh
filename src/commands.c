@@ -18,6 +18,10 @@ int get_command(struct Command *command, int fd) {
 }
 
 void handle_child_process(struct Command *command) {
+    if (command->argv[0] == NULL) {
+        return;
+    }
+
     char absolute_path[256];
 
     if (get_absolute_path(command->argv[0], absolute_path) == ERROR) {
@@ -83,5 +87,9 @@ int echo_input(struct Command command, int token_count) {
 }
 
 int is_command_exit(struct Command command){
+    if (command.argv[0] == NULL) {
+        return FALSE;
+    }
+
     return (str_eq(command.argv[0], EXIT_COMMAND) == TRUE);
 }

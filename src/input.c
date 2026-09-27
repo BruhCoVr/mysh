@@ -52,9 +52,33 @@ void stringify_buffer(char *buffer, int bytes_read) {
     buffer[bytes_read - 1] = NULL_TERMINATOR;
 }
 
+int print_cwd() {    
+    int home_len = str_len(get_home());
+
+    if (str_eq_limit(get_pwd(), get_home(), home_len)) {
+        print("~");
+        return print(get_pwd()+home_len);
+    }
+    return print(get_pwd());
+}
+
+int print_shell_prompt() {
+    int status = SUCCESS;
+
+    status = print(GREEN_COLOR);
+    status = print(get_user());
+    status = print(PURPLE_COLOR);
+    status = print(" ");
+    status = print_cwd();
+    status = print(" ");
+    status = print(SHELL_SYMBOL);
+    status = print(RESET_COLOR);
+
+    return status;
+}
 
 int prompt_input(char *buffer, int fd) {
-    if (print(SHELL_PROMPT) == ERROR) {
+    if (print_shell_prompt() == ERROR) {
         handle_error("Error occurred while printing shell prompt");
     }
 

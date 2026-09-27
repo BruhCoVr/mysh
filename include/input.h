@@ -12,6 +12,7 @@
 #include <lib.h>
 #include <tokenizer.h>
 #include <output.h>
+#include <env.h>
 
 /**
  * @brief Reads a line of input from the given fd into the provided buffer.

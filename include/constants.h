@@ -26,7 +26,11 @@
 #define LF '\n'
 #define NULL_TERMINATOR '\0'
 #define EXIT_COMMAND "exit"
-#define SHELL_PROMPT "$ "
+#define SHELL_SYMBOL "$ "
+#define GREEN_COLOR "\033[1;32m"
+#define PURPLE_COLOR "\033[1;34m"
+#define RESET_COLOR "\033[0m"
+
 
 #define TRUE 1
 #define FALSE 0
