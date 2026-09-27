@@ -35,24 +35,6 @@ int get_command(struct Command *command, int fd);
  */
 int run_command(struct Command *command);
 
-/**
- * @brief handles the input tokens and executes the appropriate command
- * @param command the command to handle
- * @param token_count the number of tokens in the command
- *
- * @return 0 on success, or ERROR on failure.
- */
-int handle_input(struct Command command, int token_count);
-
-/**
- * @brief echoes the input tokens to the terminal
- * @param command the command to echo
- * @param token_count the number of tokens in the command
- *
- * @return 0 on success, or ERROR on failure.
- */
-int echo_input(struct Command command, int token_count);
-
  /**
  * @brief checks if the command is an exit command
  * @param command the command to check

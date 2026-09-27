@@ -66,26 +66,6 @@ int run_command(struct Command *command){
     return 0;
 }
 
-int handle_input(struct Command command, int token_count) {
-    int status = echo_input(command, token_count);
-
-    if(str_eq(command.argv[0], EXIT_COMMAND) == TRUE) {
-        return 1;
-    }
-
-    return status;
-}
-
-int echo_input(struct Command command, int token_count) {
-    for (int i = 0; i < token_count; i++) {
-        if (print(command.argv[i]) == ERROR || print(" ") == ERROR) {
-            return handle_error("");
-        }
-    }
-
-    return println("");
-}
-
 int is_command_exit(struct Command command){
     if (command.argv[0] == NULL) {
         return FALSE;
