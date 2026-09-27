@@ -11,9 +11,9 @@ struct Env env = {
 void initialize_env() {
     // Do a full one pass search for environment variables
     int found_user = FALSE;
-    int found_home = 0;
-    int found_path = 0;
-    int found_pwd = 0;
+    int found_home = FALSE;
+    int found_path = FALSE;
+    int found_pwd = FALSE;
 
     for (int i = 0; environ[i] != NULL; i++) {
         if (!found_user && str_eq_limit(environ[i], "USER=", 5)) {
