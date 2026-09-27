@@ -21,7 +21,7 @@ void initialize_env() {
             found_user = TRUE;
         } else if (!found_home && str_eq_limit(environ[i], "HOME=", 5)) {
             str_cpy(env.home, environ[i] + 5);
-            found_home = 1;
+            found_home = TRUE;
         } else if (!found_path && str_eq_limit(environ[i], "PATH=", 5)) {
             str_cpy(env.path, environ[i] + 5);
             found_path = TRUE;
