@@ -15,7 +15,7 @@ struct Env {
 
 extern struct Env env;
 
-extern char **__environ;
+extern char **environ;
 
 /**
  * @brief Initializes the environment variables by searching through the system's environment.
