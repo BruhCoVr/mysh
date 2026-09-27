@@ -10,7 +10,7 @@ struct Env env = {
 
 void initialize_env() {
     // Do a full one pass search for environment variables
-    int found_user = 0;
+    int found_user = FALSE;
     int found_home = 0;
     int found_path = 0;
     int found_pwd = 0;
