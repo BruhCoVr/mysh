@@ -8,7 +8,8 @@
 struct Env {
     char user[64];
     char home[256];
-    char path[256];
+    // Up the length if needed.
+    char path[1024];
     char pwd[256];
 };
 
