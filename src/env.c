@@ -27,7 +27,7 @@ void initialize_env() {
             found_path = TRUE;
         } else if (!found_pwd && str_eq_limit(environ[i], "PWD=", 4)) {
             str_cpy(env.pwd, environ[i] + 4);
-            found_pwd = 1;
+            found_pwd = TRUE;
         }
     }
 }
