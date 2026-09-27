@@ -28,6 +28,10 @@ void initialize_env() {
         } else if (!found_pwd && str_eq_limit(environ[i], "PWD=", 4)) {
             str_cpy(env.pwd, environ[i] + 4);
             found_pwd = TRUE;
+        // Add check so the loop will exit early if able
+            if (found_user && found_home && found_path &&  found_pwd) {
+                break;
+            }
         }
     }
 }
