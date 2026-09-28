@@ -7,10 +7,9 @@
 #ifndef LIB_H
 #define LIB_H
 
-#include <stddef.h>
 #include <unistd.h>
-
 #include <constants.h>
+#include <sys/syscall.h>
 #include <heap.h>
 #include <output.h>
 
@@ -79,6 +78,14 @@ int str_eq(const char *str1, const char *str2);
  * @param src The source string to copy.
  */
 void str_cpy(char *dest, const char *src);
+
+/**
+ * @brief Kills ALL currently running threads of the program.
+ * 
+ * @param status The exit status code. Valid range: 0-255 
+ * 
+ */
+void exit(int status);
 
 /** 
  * @brief Handles an error by printing an error message and returning an error code.
