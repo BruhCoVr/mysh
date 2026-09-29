@@ -47,7 +47,7 @@ int run_command(struct Command *command){
             return handle_error_with_memory_cleanup("Error occurred while forking process");
         case 0:
             handle_child_process(command);
-            exit(0);
+            _exit(0);
         default:
             int status;
             waitpid(pid, &status, 0);

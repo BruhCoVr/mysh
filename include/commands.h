@@ -6,8 +6,6 @@
 #ifndef COMMANDS_H
 #define COMMANDS_H
 
-#include <unistd.h>
-#include <stdlib.h>
 #include <sys/wait.h>
 
 #include <constants.h>
