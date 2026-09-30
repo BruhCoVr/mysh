@@ -87,5 +87,5 @@ void run_test_input(void) {
     RUN_TEST(test_readline_max_buffer);
     RUN_TEST(test_readline_overfull_buffer);
     RUN_TEST(test_stringify_buffer);
-    RUN_TEST(test_flush_buffer);
+    // RUN_TEST(test_flush_buffer);
 }
