@@ -9,7 +9,7 @@
 // Arbitrary 256 command cap
 #define MAX_BUFFER_SIZE 256
 #define MAX_TOKEN_SIZE 256
-#define MAX_ARGS 128
+#define MAX_ARGS 64
 
 // Custom heap size for "dynamic" memory managements
 #define HEAP_SIZE 10000

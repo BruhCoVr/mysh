@@ -7,7 +7,6 @@ CFLAGS  = -I./include -Wall -Wextra
 
 SRCS = $(wildcard $(SRC)/*.c)
 OBJS = $(SRCS:$(SRC)/%.c=$(BIN)/%.o)
-TARGET = mysh
 
 TEST_SRCS = $(wildcard $(TESTS)/*.c)
 TEST_OBJS = $(TEST_SRCS:$(TESTS)/%.c=$(BIN)/%.o)
@@ -26,7 +25,7 @@ test: $(TEST)
 $(TARGET): $(OBJS) | $(BIN)
 	$(CC) $(OBJS) -o $(TARGET)
 
-$(TEST): $(TEST_OBJS) $(TLIB_OBJS) $(filter-out $(BIN)/main.o, $(OBJS)) | $(BIN)
+$(TEST): $(TEST_OBJS) $(TLIB_OBJS) $(filter-out $(BIN)/main.o, $(OBJS)) | $(BIN) $(TARGET)
 	$(CC) $^ -o $@
 
 $(BIN)/%.o: $(SRC)/%.c | $(BIN)
@@ -43,5 +42,7 @@ $(BIN):
 
 clean:
 	rm -f $(BIN)/* $(TEST) 
+	rm -f $(TARGET)
+	rm -f $(TEST)
 
 .PHONY: all clean test
