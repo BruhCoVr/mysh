@@ -35,15 +35,23 @@ int flush_buffer(int is_buffer_empty, int fd) {
     }
 
     char c;
-    ssize_t isBufferFull = read(fd, &c, 1);
+    // read_state > 0 as long as buffer is still full
+    ssize_t read_state = read(fd, &c, 1);
 
-    while(isBufferFull && c != LF) {
-
-        read(fd, &c, 1);
-        if (isBufferFull == ERROR) {
-            return ERROR;
-        }
+    while (read_state > 0 && c != LF) {
+        read_state = read(fd, &c, 1);
     }
+
+    if (read_state == ERROR) {
+        return ERROR;
+    }
+    // while(isBufferFull && c != LF) {
+
+    //     read(fd, &c, 1);
+    //     if (isBufferFull == ERROR) {
+    //         return ERROR;
+    //     }
+    // }
 
     return SUCCESS;
 }
