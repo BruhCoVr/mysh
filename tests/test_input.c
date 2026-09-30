@@ -39,6 +39,7 @@ void test_readline_max_buffer(void) {
     char test_buf[MAX_BUFFER_SIZE];
     // Fill entire buffer with 'T'
     memset(test_buf, 'T', sizeof(test_buf));
+    test_buf[MAX_BUFFER_SIZE - 1] = LF;
     
     char new_buf[MAX_BUFFER_SIZE] = {0};
     int fd = make_pipe(test_buf);
