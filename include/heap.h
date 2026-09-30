@@ -7,12 +7,14 @@
 #define MY_HEAP_H
 
 #include <constants.h>
+#include <lib.h>
 
 /**
  * @brief Allocates a block of memory of the specified size from the custom heap.
- * 
+ * Exits the program with status 1 if the heap has been exhausted.
+ *
  * @param size The size of the memory block to allocate in bytes.
- * @return A pointer to the allocated memory block, or NULL if allocation fails.
+ * @return A pointer to the allocated memory block.
  */
 char *alloc(unsigned int size);
 
