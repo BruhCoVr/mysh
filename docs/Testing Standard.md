@@ -18,7 +18,6 @@ For **modules**: `test_[module name].c`
 Within **module files** (the `test_[module name].c` files): `void test_[function name]_[type of test(optional)](void)`
 > i.e. for testing an empty line in the `readline()` function in `input.c` the function name could be as follows below:
 ```C
-/* test_input.c */
 void test_readline_empty_line(void) {/* Code goes here */}
 ```
 
@@ -26,7 +25,7 @@ void test_readline_empty_line(void) {/* Code goes here */}
 Any modules (i.e. files) that have their own functionality. The list of modules that do not require testing is shorter than the list that do. For example, the `constants.c` file does not need to be tested as it does not have any functionality besides defining constants that are used throughout the program.
 
 Any module should have **all** functions tested **unless** the function is a forwarding/wrapper function (i.e. only calls other functions). Then, it is acceptable to only test the functions that are called.\
-A notable example of this are functions such as our overloaded `print()` function which has `print_int()`, `print_str()`, etc. We only need to test `print()` with `int`, `str`, and so forth inputs rather than testing `print_int()` and `print_str()` individually.
+A notable example of this are the functions in `output.c` such as `print_int()`. That function converts the given `int` into a `C string` in a buffer and then calls `print()` which defaults to `print_str()`. So, it is only necessary to test `print_str()`, `itoa_int()` (which is in `lib.c`), etc..
 
 ## Generating the Test Program
 If program modules have **not** been compiled (i.e. `/bin` is empty), run `make all`. The main program (`mysh`) as well as a program called `test_mysh` will be created.\

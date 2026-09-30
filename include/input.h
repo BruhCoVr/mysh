@@ -12,6 +12,7 @@
 #include <lib.h>
 #include <tokenizer.h>
 #include <output.h>
+#include <env.h>
 
 /**
  * @brief Reads a line of input from the given fd into the provided buffer.
@@ -53,14 +54,5 @@ void stringify_buffer(char* input_buffer, int bytes_read);
  * @return the number of bytes read, or ERROR on failure
  */
 int prompt_input(char *buffer, int fd);
-
-/**
- * @brief Reads a command from the given fd and populates the provided Command structure.
- * @param command The Command structure to populate.
- * @param fd The file descriptor to read from.
- *
- * @return The number of bytes read, or ERROR on failure.
- */
-int get_command(struct Command *command, int fd);
 
 #endif

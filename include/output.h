@@ -6,7 +6,6 @@
 #ifndef OUTPUT_H
 #define OUTPUT_H
 
-#include <stddef.h>
 #include <unistd.h>
 
 #include <constants.h>
