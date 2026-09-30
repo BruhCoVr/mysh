@@ -16,7 +16,7 @@ static int make_pipe(const char *data) {
 }
 
 
-void test_readline_normal_input(void) {
+static void test_readline_normal_input(void) {
     char test_buf[MAX_BUFFER_SIZE] = {0};
     int fd = make_pipe("hello\n");
     int num_bytes_read = readline(test_buf, fd);
@@ -26,7 +26,7 @@ void test_readline_normal_input(void) {
     TEST_ASSERT_EQUAL_CHAR('\n', test_buf[5]);
 }
 
-void test_readline_empty(void) {
+static void test_readline_empty(void) {
     char test_buf[MAX_BUFFER_SIZE] = {0};
     int fd = make_pipe("\n");
     int num_bytes_read = readline(test_buf, fd);
@@ -35,7 +35,7 @@ void test_readline_empty(void) {
     TEST_ASSERT_EQUAL_CHAR('\n', test_buf[0]);
 }
 
-void test_readline_max_buffer(void) {
+static void test_readline_max_buffer(void) {
     char test_buf[MAX_BUFFER_SIZE];
     // Fill entire buffer with 'T'
     memset(test_buf, 'T', sizeof(test_buf));
@@ -50,7 +50,7 @@ void test_readline_max_buffer(void) {
     TEST_ASSERT_EQUAL_INT(MAX_BUFFER_SIZE, num_bytes_read);
 }
 
-void test_readline_overfull_buffer(void) {
+static void test_readline_overfull_buffer(void) {
     char overfull_buf[MAX_BUFFER_SIZE + 10];
     memset(overfull_buf, 'T', sizeof(overfull_buf));
     // Put LF past where buffer should be able to be read
@@ -64,7 +64,7 @@ void test_readline_overfull_buffer(void) {
     TEST_ASSERT_EQUAL_INT(MAX_BUFFER_SIZE, num_bytes_read);
 }
 
-void test_stringify_buffer(void) {
+static void test_stringify_buffer(void) {
     char buffer[] = {'H','e','l','l','o',' ','w','o','r','l','d','\n'};
     stringify_buffer(buffer, 12);
     TEST_ASSERT_EQUAL_CHAR('\0', buffer[11]);
@@ -81,11 +81,61 @@ void test_stringify_buffer(void) {
     // stringify_buffer(buffer2, 0);
 }
 
+static void test_flush_buffer_regular_buffer(void) {
+    char buffer[] = {'H','e','l','l','o',' ','w','o','r','l','d','\n'};
+    int fd = make_pipe(buffer);
+    
+    int flush_status = flush_buffer(FALSE, fd);
+
+    TEST_ASSERT_EQUAL_INT((int32_t) SUCCESS, (int32_t) flush_status);
+    close(fd);
+}
+
+static void test_flush_buffer_empty_buffer(void) {
+    char buffer[] = {};
+    int fd = make_pipe(buffer);
+
+    int flush_status = flush_buffer(TRUE, fd);
+
+    TEST_ASSERT_EQUAL_INT((int32_t) SUCCESS, (int32_t) flush_status);
+    close(fd);
+}
+
+static void test_flush_buffer_no_flush(void) {
+    char buffer[] = {'H','e','l','l','o',' ','w','o','r','l','d','\n'};
+    int fd = make_pipe(buffer);
+
+    int flush_status = flush_buffer(TRUE, fd);
+
+    TEST_ASSERT_EQUAL_INT((int32_t) SUCCESS, (int32_t) flush_status);
+    TEST_ASSERT_EQUAL_CHAR_ARR("Hello world\n", buffer);
+
+    close(fd);
+}
+
+static void test_flush_buffer_stops_after_newline(void) {
+    int fd = make_pipe("Hello world\nnext\n");
+    int flush_status = flush_buffer(FALSE, fd);
+
+    // Should have consumed everything through the first '\n'
+    TEST_ASSERT_EQUAL_INT((int32_t) SUCCESS, (int32_t) flush_status);
+
+    char c = 0;
+    ssize_t n = read(fd, &c, 1);
+    TEST_ASSERT_EQUAL_INT((int32_t) 1, (int32_t) n);
+    TEST_ASSERT_EQUAL_CHAR('n', c);   // first char of the second line
+
+    close(fd);
+}
+
 void run_test_input(void) {
     RUN_TEST(test_readline_normal_input);
     RUN_TEST(test_readline_empty);
     RUN_TEST(test_readline_max_buffer);
     RUN_TEST(test_readline_overfull_buffer);
     RUN_TEST(test_stringify_buffer);
-    RUN_TEST(test_flush_buffer);
+    RUN_TEST(test_flush_buffer_regular_buffer);
+    RUN_TEST(test_flush_buffer_empty_buffer);
+    RUN_TEST(test_flush_buffer_no_flush);
+    RUN_TEST(test_flush_buffer_stops_after_newline);
 }
