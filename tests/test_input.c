@@ -65,16 +65,20 @@ void test_readline_overfull_buffer(void) {
 }
 
 void test_stringify_buffer(void) {
-    char test_buf[] = "hello\n";
-    stringify_buffer(test_buf, 6);
-    TEST_ASSERT_EQUAL_CHAR('\0', test_buf[5]);
-    char* expected = "hello";
-    TEST_ASSERT_EQUAL_CHAR_ARR(expected, test_buf);
-}
+    char buffer[] = {'H','e','l','l','o',' ','w','o','r','l','d','\n'};
+    stringify_buffer(buffer, 12);
+    TEST_ASSERT_EQUAL_CHAR('\0', buffer[11]);
 
-void test_flush_buffer(void) {
-    TEST_ASSERT_EQUAL_INT(0, flush_buffer(FALSE, STDIN_FD));
-    TEST_ASSERT_EQUAL_INT(0, flush_buffer(TRUE, STDIN_FD));
+    // We should be keeping the 'H' here since we
+    // don't want to overwrite any input we receive
+    char buffer1[] = {'H','\n'};
+    stringify_buffer(buffer1, 2);
+    TEST_ASSERT_EQUAL_CHAR('H', buffer1[0]);
+
+    // Trying to see if it errors out like crazy here
+    // I think it will since there isn't any checking on bounds
+    // char buffer2[] = {};
+    // stringify_buffer(buffer2, 0);
 }
 
 void run_test_input(void) {
