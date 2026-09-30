@@ -70,3 +70,4 @@ void assert_equal_char(const char expected, const char actual, const char* file,
         test_failure_count++;
     }
 }
+

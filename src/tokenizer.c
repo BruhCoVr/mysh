@@ -42,6 +42,7 @@ void tokenize_input(char *input, struct Command *command) {
     if (arg_buffer_index > 0) {
         insert_argument(argv, arg_buffer, arg_count++);
     }
-
+    
+    command->argv[arg_count] = NULL; // Null-terminate the argv array
     command->argc = arg_count;
 }
