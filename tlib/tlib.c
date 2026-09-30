@@ -71,3 +71,34 @@ void assert_equal_char(const char expected, const char actual, const char* file,
     }
 }
 
+void assert_true(int condition, const char* str_condition, const char* file, int line) {
+    if (!condition) {
+        printf(ANSI_COLOR_RED "[ASSERTION FAILED: Expected True] in %s at line %d\n" ANSI_COLOR_RESET, file, line);
+        printf("\tCondition " ANSI_COLOR_YELLOW "%s" ANSI_COLOR_RESET " was false\n", str_condition);
+        test_failure_count++;
+    }
+}
+
+void assert_false(int condition, const char* str_condition, const char* file, int line) {
+    if (condition) {
+        printf(ANSI_COLOR_RED "[ASSERTION FAILED: Expected False] in %s at line %d\n" ANSI_COLOR_RESET, file, line);
+        printf("\tCondition " ANSI_COLOR_YELLOW "%s" ANSI_COLOR_RESET " was true\n", str_condition);
+        test_failure_count++;
+    }
+}
+
+void assert_null(const void* ptr, const char* str_ptr, const char* file, int line) {
+    if (ptr != NULL) {
+        printf(ANSI_COLOR_RED "[ASSERTION FAILED: Expected NULL] in %s at line %d\n" ANSI_COLOR_RESET, file, line);
+        printf("\t" ANSI_COLOR_YELLOW "%s" ANSI_COLOR_RESET " was %p\n", str_ptr, ptr);
+        test_failure_count++;
+    }
+}
+
+void assert_not_null(const void* ptr, const char* str_ptr, const char* file, int line) {
+    if (ptr == NULL) {
+        printf(ANSI_COLOR_RED "[ASSERTION FAILED: Expected non-NULL] in %s at line %d\n" ANSI_COLOR_RESET, file, line);
+        printf("\t" ANSI_COLOR_YELLOW "%s" ANSI_COLOR_RESET " was NULL\n", str_ptr);
+        test_failure_count++;
+    }
+}
