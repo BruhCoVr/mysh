@@ -3,6 +3,8 @@
 #include "../tlib/tlib.h"
 #include "include/test_heap.h"
 #include <stdint.h>
+#include <unistd.h>
+#include <sys/wait.h>
 
 void test_alloc_blocks(void) {
     free_all();
@@ -16,13 +18,20 @@ void test_alloc_blocks(void) {
 }
 
 void test_alloc_exhaustion(void) {
-    free_all();
+    pid_t pid = fork();
 
-    char *block = alloc(HEAP_SIZE);
-    char *overflow = alloc(1);
+    if (pid == 0) {
+        free_all();
+        alloc(HEAP_SIZE);
+        alloc(1); // heap is now full; this should exit(1)
+        _exit(0); // unreachable if alloc() behaves correctly
+    }
 
-    TEST_ASSERT_EQUAL_UINT((uint8_t) 1, (uint8_t) (block != NULL));
-    TEST_ASSERT_EQUAL_UINT((uint8_t) 1, (uint8_t) (overflow == NULL));
+    int status;
+    waitpid(pid, &status, 0);
+
+    TEST_ASSERT_EQUAL_UINT((uint8_t) 1, (uint8_t) WIFEXITED(status));
+    TEST_ASSERT_EQUAL_INT((int8_t) 1, (int8_t) WEXITSTATUS(status));
 }
 
 void test_free_all(void) {
