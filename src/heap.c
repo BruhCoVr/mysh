@@ -5,7 +5,7 @@ static char *freep = heap;
 
 char *alloc(unsigned int size) {
     if (freep + size > heap + HEAP_SIZE) {
-        return NULLY;
+        exit(1);  // Not enough space in the heap, exit the program
     }
     
     char *p = freep;
