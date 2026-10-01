@@ -36,7 +36,6 @@ void assert_equal_int8(int8_t expected, int8_t actual, const char* file, int lin
 void assert_equal_int16(int16_t expected, int16_t actual, const char* file, int line);
 void assert_equal_int32(int32_t expected, int32_t actual, const char* file, int line);
 
-
 #define TEST_ASSERT_EQUAL_CHAR_ARR(expected, actual) \
     assert_equal_char_arr((expected), (actual), __FILE__, __LINE__)
 
@@ -46,6 +45,24 @@ void assert_equal_char_arr(const char* expected, const char* actual, const char*
     assert_equal_char((expected), (actual), __FILE__, __LINE__)
     
 void assert_equal_char(const char expected, const char actual, const char* file, int line);
+void assert_equal_char_arr(const char* expected, const char* actual, const char* file, int line);
+
+#define TEST_ASSERT_TRUE(condition) \
+    assert_true(!!(condition), #condition, __FILE__, __LINE__)
+
+#define TEST_ASSERT_FALSE(condition) \
+    assert_false(!!(condition), #condition, __FILE__, __LINE__)
+
+#define TEST_ASSERT_NULL(ptr) \
+    assert_null((ptr), #ptr, __FILE__, __LINE__)
+
+#define TEST_ASSERT_NOT_NULL(ptr) \
+    assert_not_null((ptr), #ptr, __FILE__, __LINE__)
+
+void assert_true(int condition, const char* str_condition, const char* file, int line);
+void assert_false(int condition, const char* str_condition, const char* file, int line);
+void assert_null(const void* ptr, const char* str_ptr, const char* file, int line);
+void assert_not_null(const void* ptr, const char* str_ptr, const char* file, int line);
 
 #define RUN_TEST(test_function) do { \
     int prev_fails = test_failure_count; \
