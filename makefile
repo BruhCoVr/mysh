@@ -20,6 +20,8 @@ TEST = test_mysh
 # Makes everything besides tests
 all: $(TARGET) test
 
+mysh: $(TARGET)
+
 test: $(TEST)
 
 $(TARGET): $(OBJS) | $(BIN)
