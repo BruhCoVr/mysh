@@ -42,5 +42,15 @@
 #define SUCCESS 0
 #define EXIT 1
 
+// For parser, tokenizer and commands
+#define TOKEN_LIMIT_REACHED -2
+#define TOKEN_TOO_LONG -3
+#define EMPTY_INPUT -4
+// used in parser to indicate something wrong with the command
+#define SYNTAX_ERROR -5
+// flag to indicate missing filename for > or < operator
+#define MISSING_FILENAME -6
+#define ARG_MAX_EXCEEDED -7
+#define TOO_MANY_STAGES -8
 
 #endif
