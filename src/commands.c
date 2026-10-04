@@ -1,20 +1,32 @@
 #include "commands.h"
 
-int get_command(struct Command *command, int fd) {
+int get_job(struct Job *job, int fd) {
     char *input_buffer = alloc(MAX_BUFFER_SIZE);
     int bytes_read;
 
     bytes_read = prompt_input(input_buffer, fd);
 
     if (bytes_read == ERROR) {
-        return handle_error_with_memory_cleanup("Error occurred while prompting input");
+        return ERROR;
     }
 
-    tokenize_input(input_buffer, command);
+    // Allocate space for 64 tokens + NULL @ end of array
+    // Note: This can be on stack since we want pointers to all the tokens stored
+    // by the tokenizer. Tokenizer uses alloc() to store pointers to the tokens
+    char *tokens[MAX_TOKENS + 1];
+    int status = tokenize_input(input_buffer, tokens);
+    
+    if (status != SUCCESS) {
+        return status;
+    }
 
-    free_all();
+    if (tokens[0] == NULL) {
+        return EMPTY_INPUT;
+    }
 
-    return 0;
+    status = parse_job(tokens, job);
+
+    return status;
 }
 
 void handle_child_process(struct Command *command) {
@@ -66,10 +78,10 @@ int run_command(struct Command *command){
     return 0;
 }
 
-int is_command_exit(struct Command command){
-    if (command.argv[0] == NULL) {
+int is_job_exit(struct Job job){ 
+    if (job.pipeline[0].argv[0] == NULL) {
         return FALSE;
     }
 
-    return (str_eq(command.argv[0], EXIT_COMMAND) == TRUE);
+    return (str_eq(job.pipeline[0].argv[0], EXIT_COMMAND) == TRUE);
 }

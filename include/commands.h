@@ -15,15 +15,17 @@
 #include <tokenizer.h>
 #include <jobs.h>
 #include <path.h>
+#include <parser.h>
 
 /**
- * @brief Reads a command from the given fd and populates the provided Command structure.
- * @param command The Command structure to populate.
+ * @brief Reads from the given fd and populates the given Job structure.
+ * @param job The Job structure to populate.
  * @param fd The file descriptor to read from.
  *
- * @return 0 on success, or ERROR on failure.
+ * @return One of the following: SUCCESS, ERROR, TOKEN_LIMIT_REACHED, TOKEN_TOO_LONG,
+ * EMPTY_INPUT, MISSING_FILENAME, SYNTAX_ERROR
  */
-int get_command(struct Command *command, int fd);
+int get_job(struct Job *job, int fd);
 
 /**
  * @brief Executes the given command.
@@ -39,6 +41,6 @@ int run_command(struct Command *command);
  *
  * @return TRUE if the command is an exit command, FALSE otherwise.
  */
-int is_command_exit(struct Command command);
+int is_job_exit(struct Job job);
 
 #endif
