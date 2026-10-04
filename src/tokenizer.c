@@ -1,48 +1,85 @@
 #include <tokenizer.h>
 
-void insert_argument(char *argv[], const char *token, int arg_count) {
-    argv[arg_count] = alloc(MAX_TOKEN_SIZE);
-    str_cpy(argv[arg_count], token);
+static int is_operator(char c) {
+    return c == '<'
+        || c == '>'
+        || c == '|'
+        || c == '&';
 }
 
-void reset_arg_buffer(char *arg_buffer, int *arg_index) {
-    arg_buffer[0] = NULL_TERMINATOR;
-    *arg_index = 0;
-}
-
-void add_char_to_buffer(char *arg_buffer, char c, int arg_index) {
-    arg_buffer[arg_index] = c;
-    arg_buffer[arg_index + 1] = NULL_TERMINATOR;
-}
+static int insert_token(char *tokens[], const char *token, int *token_count) { 
+    int status = SUCCESS;
+    if (*token_count >= MAX_TOKENS - 1) {
+        status = TOKEN_LIMIT_REACHED;
+    }
     
-void tokenize_input(char *input, struct Command *command) {
-    int i = 0;
-    int arg_count = 0;
-    int arg_buffer_index = 0;
-    char *arg_buffer = alloc(MAX_BUFFER_SIZE);
+    if (status == SUCCESS) {
+        tokens[*token_count] = alloc(MAX_TOKEN_SIZE);
+        str_cpy(tokens[*token_count], token);
+        (*token_count)++;
+    }
     
-    char **argv = command->argv;
+    return status;
+}
 
-    while(input[i] != NULL_TERMINATOR && arg_count < MAX_ARGS - 1) {
-        char c = input[i++];    
-        
-        if (c != ' ') {
-            add_char_to_buffer(arg_buffer, c, arg_buffer_index++);
-            continue;
-        } 
-        
-        if (arg_buffer_index == 0) {
+static void reset_token_buffer(char *token_buffer, int *token_len) {
+    token_buffer[0] = NULL_TERMINATOR;
+    *token_len = 0;
+}
+
+static int add_char_to_buffer(char *token_buffer, char c, int *token_len) {
+    int status = SUCCESS;
+    if (*token_len >= MAX_TOKEN_SIZE - 1) {
+        status = TOKEN_TOO_LONG;
+    }
+    
+    if (status == SUCCESS) {
+        token_buffer[*token_len] = c;
+        token_buffer[*token_len + 1] = NULL_TERMINATOR;
+        (*token_len)++;
+    }
+
+    return status;
+}
+
+int tokenize_input(char *input, char *tokens[]) {
+    int status = 0;
+    int token_count = 0;
+    int token_len = 0;
+    char *token_buffer = alloc(MAX_TOKEN_SIZE);
+
+    for (int i = 0; input[i] != NULL_TERMINATOR && status == 0; i++) {
+        char c = input[i];
+
+        // Still building token here
+        if (c != ' ' && !is_operator(c)) {
+            status = add_char_to_buffer(token_buffer, c, &token_len);
             continue;
         }
         
-        insert_argument(argv, arg_buffer, arg_count++);
-        reset_arg_buffer(arg_buffer, &arg_buffer_index);
+        // If we hit this point we either have an operator or white space
+        // signifying end of token
+        if (token_len > 0) {
+            status = insert_token(tokens, token_buffer, &token_count);
+            reset_token_buffer(token_buffer, &token_len);
+        }
+
+        // Now check if there is an operator sitting in c and make it 
+        // it's own token
+        if (status == 0 && is_operator(c)) {
+            status = add_char_to_buffer(token_buffer, c, &token_len);
+            status = insert_token(tokens, token_buffer, &token_count);
+            reset_token_buffer(token_buffer, &token_len);
+        }
+
     }
 
-    if (arg_buffer_index > 0) {
-        insert_argument(argv, arg_buffer, arg_count++);
+    if (status == 0 && token_len > 0) {
+        status = insert_token(tokens, token_buffer, &token_count);
     }
-    
-    command->argv[arg_count] = NULL; // Null-terminate the argv array
-    command->argc = arg_count;
+
+    // Should free token_buffer here?
+
+    tokens[token_count] = NULL;
+    return status;
 }
