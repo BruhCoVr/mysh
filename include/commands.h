@@ -7,6 +7,7 @@
 #define COMMANDS_H
 
 #include <sys/wait.h>
+#include <fcntl.h>
 
 #include <constants.h>
 #include <lib.h>
@@ -30,10 +31,12 @@ int get_job(struct Job *job, int fd);
 /**
  * @brief Executes the given command.
  * @param command The Command structure containing the command to execute.
+ * @param input_fd The file descriptor for child's standard input.
+ * @param output_fd The file descriptor for child's standard output.
  *
  * @return 0 on success, or ERROR on failure.
  */
-int run_command(struct Command *command);
+int run_command(struct Command *command, int input_fd, int output_fd);
 
  /**
  * @brief checks if the command is an exit command

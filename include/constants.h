@@ -52,5 +52,7 @@
 #define MISSING_FILENAME -6
 #define ARG_MAX_EXCEEDED -7
 #define TOO_MANY_STAGES -8
+// file descriptor related errors
+#define FD_OPEN_ERROR -9
 
 #endif

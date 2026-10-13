@@ -21,7 +21,8 @@ int get_job(struct Job *job, int fd) {
     }
 
     if (tokens[0] == NULL) {
-        return EMPTY_INPUT;
+        // used to return EMPTY_INPUT, but empty input can be safely ignored
+        return SUCCESS; 
     }
 
     status = parse_job(tokens, job);
@@ -29,7 +30,23 @@ int get_job(struct Job *job, int fd) {
     return status;
 }
 
-void handle_child_process(struct Command *command) {
+int handle_redirection(int input_fd, int output_fd) {
+    int status = SUCCESS; 
+    
+    if (input_fd != STDIN_FD) {
+        status = status_keep_error(status, dup2(input_fd, STDIN_FD));
+        status = status_keep_error(status, close(input_fd));
+    }
+    if (output_fd != STDOUT_FD) {
+        status = status_keep_error(status, dup2(output_fd, STDOUT_FD));
+        status = status_keep_error(status, close(output_fd));
+    }
+
+    return status;
+}
+
+void handle_child_process(struct Command *command, int input_fd, int output_fd) {
+    int status = SUCCESS;
     if (command->argv[0] == NULL) {
         return;
     }
@@ -41,15 +58,22 @@ void handle_child_process(struct Command *command) {
         handle_error_with_memory_cleanup(command->argv[0]);
     }
 
-    // this sets errno, we have to handle it properly somehow
-    int status = execve(absolute_path, command->argv, environ);
+    status = handle_redirection(input_fd, output_fd);
 
     if (status == ERROR) {
-        handle_error_with_memory_cleanup("Error occurred while executing command");
+        handle_error_with_memory_cleanup("Error occurred while redirecting input/output");
+    }
+
+    // this sets errno, we have to handle it properly somehow
+    status = execve(absolute_path, command->argv, environ);
+
+    if (status == ERROR) {
+        print("Error occurred while executing command: ");
+        println(command->argv[0]);
     }
 }
 
-int run_command(struct Command *command){
+int run_command(struct Command *command, int input_fd, int output_fd) {
     pid_t pid;
 
     pid = fork();
@@ -58,10 +82,11 @@ int run_command(struct Command *command){
         case ERROR:
             return handle_error_with_memory_cleanup("Error occurred while forking process");
         case 0:
-            handle_child_process(command);
-            _exit(0);
+            handle_child_process(command, input_fd, output_fd);
+            exit(ERROR);
         default:
             int status;
+
             waitpid(pid, &status, 0);
 
             // if (WIFEXITED(status)) {
