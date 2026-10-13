@@ -13,6 +13,18 @@ int redirect_output(char *outfile_path, int *outfile_fd) {
     return SUCCESS;
 }
 
+int redirect_input(char *infile_path, int *infile_fd) {
+    *infile_fd = open(infile_path, O_RDONLY);
+
+    if (*infile_fd == ERROR){
+        print("Error opening input file: ");
+        println(infile_path);
+        return FD_OPEN_ERROR;
+    }
+
+    return SUCCESS;
+}
+
 int is_last_stage(struct Job *job, unsigned int stage) {
     return (stage == job->num_stages - 1);
 }
@@ -43,6 +55,15 @@ int run_job(struct Job *job) {
     int outfile_fd = STDOUT_FD;
 
     for (unsigned int i = 0; i < job->num_stages; i++) {
+        if (i == 0 && job->infile_path != NULL) {
+            status = redirect_input(job->infile_path, &infile_fd);
+            if (status != SUCCESS) {
+                print("Error occurred while opening input file\n");
+                // we can handle errno here,
+                return FD_OPEN_ERROR;
+            }
+        }
+        
         if (is_last_stage(job, i) && job->outfile_path != NULL) {
             status = redirect_output(job->outfile_path, &outfile_fd);
             if (status != SUCCESS) {
