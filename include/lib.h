@@ -122,4 +122,14 @@ int handle_error(const char *msg);
  */
 int handle_error_with_memory_cleanup(const char *msg);
 
+/**
+ * @brief Keeps the original error status if it is already an error, otherwise returns the new status.
+ * 
+ * @param status The original status code.
+ * @param new_status The new status code to consider.
+ * 
+ * @return The original status if it is an error, otherwise the new status.
+ */
+int status_keep_error(int status, int new_status);
+
 #endif

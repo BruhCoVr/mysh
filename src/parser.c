@@ -114,7 +114,7 @@ int parse_job(char *tokens[], struct Job *job) {
         job->infile_path = tokens[token_idx++];
     }
 
-    if (are_tokens_equal(tokens[token_idx], "<")) {
+    if (are_tokens_equal(tokens[token_idx], ">")) {
         token_idx++;
         if (tokens[token_idx] == NULL || is_token_operator(tokens[token_idx])) {
             return MISSING_FILENAME;

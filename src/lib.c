@@ -167,3 +167,11 @@ int handle_error_with_memory_cleanup(const char *msg) {
     free_all();
     return handle_error(msg);
 }
+
+int status_keep_error(int status, int new_status) {
+    if (status == ERROR) {
+        return status;
+    }
+
+    return new_status;
+}
