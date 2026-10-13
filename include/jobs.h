@@ -36,4 +36,13 @@ struct Job {
   int is_background;
 };
 
+/**
+ * @brief Runs the job inside the job struct
+ * 
+ * @param job The job to be ran
+ * 
+ * @return SUCCESS or ERROR
+ */
+int run_job(struct Job *job);
+
 #endif

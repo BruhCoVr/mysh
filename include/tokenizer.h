@@ -8,14 +8,15 @@
 
 #include <constants.h>
 #include <lib.h>
-#include <jobs.h>
 
 /**
  * @brief Tokenizes the input string into an array of tokens.
  * 
- * @param input The null-terminated string to tokenize.
- * @param command The command structure to store the resulting tokens. 
+ * @param input The null-terminated input string to tokenize.
+ * @param tokens The array of tokens to be populated.
+ * 
+ * @return SUCCESS if successful; TOKEN_LIMIT_REACHED or TOKEN_TOO_LONG otherwise
  */
-void tokenize_input(char *input, struct Command *command);
+int tokenize_input(char *input, char *tokens[]);
 
 #endif
