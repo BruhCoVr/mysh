@@ -1,93 +1,156 @@
 #include <jobs.h>
 #include <commands.h>
 
-int redirect_output(char *outfile_path, int *outfile_fd) {
-    *outfile_fd = open(outfile_path, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
 
-    if (*outfile_fd == ERROR){
-        print("Error opening output file: ");
-        println(outfile_path);
-        return FD_OPEN_ERROR;
+int handle_input_redirection(int *infile_fd, char *infile_path) {
+    if (infile_path != NULL) {
+        *infile_fd = open(infile_path, O_RDONLY);
+
+        if (*infile_fd == ERROR){
+            print("Error opening input file: ");
+            println(infile_path);
+            return FD_OPEN_ERROR;
+        }
     }
 
     return SUCCESS;
 }
 
-int redirect_input(char *infile_path, int *infile_fd) {
-    *infile_fd = open(infile_path, O_RDONLY);
+int handle_output_redirection(int *outfile_fd, char *outfile_path) {
+    if (outfile_path != NULL) {
+        *outfile_fd = open(outfile_path, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
 
-    if (*infile_fd == ERROR){
-        print("Error opening input file: ");
-        println(infile_path);
-        return FD_OPEN_ERROR;
+        if (*outfile_fd == ERROR){
+            print("Error opening output file: ");
+            println(outfile_path);
+            return FD_OPEN_ERROR;
+        }
     }
 
     return SUCCESS;
 }
 
-int is_last_stage(struct Job *job, unsigned int stage) {
-    return (stage == job->num_stages - 1);
+int close_input_file(int *infile_fd) {
+    if (*infile_fd != STDIN_FD) {
+        int status = close(*infile_fd);
+        *infile_fd = STDIN_FD;
+        return status;
+    }
+    return SUCCESS;
 }
 
-int is_first_stage(unsigned int stage) {
-    return (stage == 0);
+int close_output_file(int *outfile_fd) {
+    if (*outfile_fd != STDOUT_FD) {
+        int status = close(*outfile_fd);
+        *outfile_fd = STDOUT_FD;
+        return status;
+    }
+    return SUCCESS;
 }
 
 int close_open_files(int *infile_fd, int *outfile_fd) {
     int status = SUCCESS;
-
-    if (*infile_fd != STDIN_FD) {
-        status = status_keep_error(status, close(*infile_fd));
-        *infile_fd = STDIN_FD;
-    }
-    if (*outfile_fd != STDOUT_FD) {
-        status = status_keep_error(status, close(*outfile_fd));
-        *outfile_fd = STDOUT_FD;
-    }
-
+    status = status_keep_error(status, close_input_file(infile_fd));
+    status = status_keep_error(status, close_output_file(outfile_fd));
     return status;
 }
 
+int handle_pipeline(struct Job *job, int *infile_fd) {
+    int status = SUCCESS;
+    int pipefd[2];
+    int pid_count = 0;
+
+    for (unsigned int stage = 0; stage < job->num_stages - 1; stage++) {
+        status = pipe(pipefd); // sets errno
+        if (status == ERROR) {
+            print("Error occurred while creating pipe\n");
+            return ERROR;
+        }
+
+        pid_t pid = run_command(&job->pipeline[stage], *infile_fd, pipefd[WRITE_END], pipefd[READ_END]);
+        
+        if (pid == ERROR) {
+            close(pipefd[READ_END]);
+            close(pipefd[WRITE_END]);
+            print("Error occurred while running command\n");
+            return ERROR;
+        }
+        
+        status = close(pipefd[WRITE_END]);
+        status = status_keep_error(status, close_input_file(infile_fd));
+
+        *infile_fd = pipefd[READ_END];
+        job->pids[stage] = pid;
+
+        pid_count++;
+
+        if (status == ERROR) {
+            print("Error occurred while closing input file\n");
+            return ERROR;
+        } 
+    }
+
+    return pid_count;
+}
+
+void wait_for_job(struct Job *job, int pid_count) {
+    for (int stage = 0; stage < pid_count; stage++) {
+        int wstatus;
+        waitpid(job->pids[stage], &wstatus, 0);
+    }
+}
+
 int run_job(struct Job *job) {
-    /**
-     * TODO:
-     * This will become more complicated in other tickets when input redirection,
-     * background processing, and multi-stage pipelines are implemented.
-     */
     int status = SUCCESS;
     int infile_fd = STDIN_FD;
     int outfile_fd = STDOUT_FD;
+    int pid_count;
 
-    for (unsigned int stage = 0; stage < job->num_stages; stage++) {
-        if (is_first_stage(stage) && job->infile_path != NULL) {
-            status = redirect_input(job->infile_path, &infile_fd);
-            if (status != SUCCESS) {
-                print("Error occurred while opening input file\n");
-                // we can handle errno here,
-                return FD_OPEN_ERROR;
-            }
-        }
-
-        if (is_last_stage(job, stage) && job->outfile_path != NULL) {
-            status = redirect_output(job->outfile_path, &outfile_fd);
-            if (status != SUCCESS) {
-                print("Error occurred while opening output file\n");
-                // we can handle errno here,
-                return FD_OPEN_ERROR;
-            }
-        }
-
-        status = run_command(&job->pipeline[stage], infile_fd, outfile_fd);
-        if (status != SUCCESS) {
-            print("Error occurred while running command\n");
-        }
-
-        status = status_keep_error(status, close_open_files(&infile_fd, &outfile_fd));
-        if (status != SUCCESS) {
-            print("Error occurred while closing file descriptors\n");
-            return ERROR;
-        }
+    if (job->num_stages == 0) {
+        return SUCCESS;
     }
 
-    return SUCCESS;
+    status = handle_input_redirection(&infile_fd, job->infile_path);
+
+    if (status != SUCCESS) {
+        close_input_file(&infile_fd);
+        print("Error occurred while opening input file\n");
+        return status;
+    }
+
+    pid_count = handle_pipeline(job, &infile_fd);
+
+    if (pid_count == ERROR) {
+        close_open_files(&infile_fd, &outfile_fd);
+        print("Error occurred while handling pipeline\n");
+        return ERROR;
+    }
+
+    status = handle_output_redirection(&outfile_fd, job->outfile_path);
+
+    if (status != SUCCESS) {
+        close_open_files(&infile_fd, &outfile_fd);
+        print("Error occurred while opening output file\n");
+        return ERROR;
+    }
+
+    // Finally, run the last command in the pipeline
+    pid_t pid = run_command(&job->pipeline[job->num_stages - 1], infile_fd, outfile_fd, NONE);
+    if (pid == ERROR) {
+        close_open_files(&infile_fd, &outfile_fd);
+        print("Error occurred while running command\n");
+        return ERROR;
+    }
+
+    pid_count++;
+
+    status = close_open_files(&infile_fd, &outfile_fd);
+
+    job->pids[job->num_stages - 1] = pid;
+
+    if (!job->is_background) {
+        wait_for_job(job, pid_count);
+    }
+
+    return status;
 }

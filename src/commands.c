@@ -22,6 +22,7 @@ int get_job(struct Job *job, int fd) {
 
     if (tokens[0] == NULL) {
         // used to return EMPTY_INPUT, but empty input can be safely ignored
+        job->num_stages = 0;
         return SUCCESS; 
     }
 
@@ -30,22 +31,22 @@ int get_job(struct Job *job, int fd) {
     return status;
 }
 
-int handle_redirection(int input_fd, int output_fd) {
+int handle_redirection(int infile_fd, int outfile_fd) {
     int status = SUCCESS; 
     
-    if (input_fd != STDIN_FD) {
-        status = status_keep_error(status, dup2(input_fd, STDIN_FD));
-        status = status_keep_error(status, close(input_fd));
+    if (infile_fd != STDIN_FD) {
+        status = status_keep_error(status, dup2(infile_fd, STDIN_FD));
+        status = status_keep_error(status, close(infile_fd));
     }
-    if (output_fd != STDOUT_FD) {
-        status = status_keep_error(status, dup2(output_fd, STDOUT_FD));
-        status = status_keep_error(status, close(output_fd));
+    if (outfile_fd != STDOUT_FD) {
+        status = status_keep_error(status, dup2(outfile_fd, STDOUT_FD));
+        status = status_keep_error(status, close(outfile_fd));
     }
 
     return status;
 }
 
-void handle_child_process(struct Command *command, int input_fd, int output_fd) {
+void handle_child_process(struct Command *command, int infile_fd, int outfile_fd, int fd_to_close) {
     int status = SUCCESS;
     if (command->argv[0] == NULL) {
         return;
@@ -58,7 +59,11 @@ void handle_child_process(struct Command *command, int input_fd, int output_fd) 
         handle_error_with_memory_cleanup(command->argv[0]);
     }
 
-    status = handle_redirection(input_fd, output_fd);
+    if (fd_to_close != NONE) {
+        status = status_keep_error(status, close(fd_to_close));
+    }   
+
+    status = status_keep_error(status, handle_redirection(infile_fd, outfile_fd));
 
     if (status == ERROR) {
         handle_error_with_memory_cleanup("Error occurred while redirecting input/output");
@@ -73,7 +78,7 @@ void handle_child_process(struct Command *command, int input_fd, int output_fd) 
     }
 }
 
-int run_command(struct Command *command, int input_fd, int output_fd) {
+pid_t run_command(struct Command *command, int infile_fd, int outfile_fd, int fd_to_close) {
     pid_t pid;
 
     pid = fork();
@@ -82,25 +87,11 @@ int run_command(struct Command *command, int input_fd, int output_fd) {
         case ERROR:
             return handle_error_with_memory_cleanup("Error occurred while forking process");
         case 0:
-            handle_child_process(command, input_fd, output_fd);
+            handle_child_process(command, infile_fd, outfile_fd, fd_to_close);
             exit(ERROR);
         default:
-            int status;
-
-            waitpid(pid, &status, 0);
-
-            // if (WIFEXITED(status)) {
-            //     println("Child process exited normally");
-            // } else if (WIFSIGNALED(status)) {
-            //     println("Child process terminated by signal");
-            // } else if (WIFSTOPPED(status)) {
-            //     println("Child process stopped");
-            // } else if (WIFCONTINUED(status)) {
-            //     println("Child process continued");
-            // }
+            return pid;
     }
-
-    return 0;
 }
 
 int is_job_exit(struct Job job){ 
