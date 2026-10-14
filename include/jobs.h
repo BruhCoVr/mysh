@@ -6,6 +6,8 @@
 #ifndef JOBS_H
 #define JOBS_H
 
+#include <sys/types.h>
+
 #include <constants.h>
 
 /**
@@ -30,6 +32,7 @@ struct Command {
  */
 struct Job {
   struct Command pipeline[MAX_PIPELINE_LEN];
+  pid_t pids[MAX_PIPELINE_LEN];
   unsigned int num_stages;
   char *outfile_path;
   char *infile_path;

@@ -11,7 +11,7 @@
 #define MAX_TOKEN_SIZE 256
 #define MAX_ARGS 64
 #define MAX_TOKENS 64
-#define MAX_PIPELINE_LEN 2
+#define MAX_PIPELINE_LEN 8
 
 // Custom heap size for "dynamic" memory managements
 #define HEAP_SIZE 10000
@@ -41,6 +41,11 @@
 #define NULLY 0
 #define SUCCESS 0
 #define EXIT 1
+#define NONE -1
+
+// For pipes
+#define READ_END 0
+#define WRITE_END 1
 
 // For parser, tokenizer and commands
 #define TOKEN_LIMIT_REACHED -2
@@ -54,5 +59,6 @@
 #define TOO_MANY_STAGES -8
 // file descriptor related errors
 #define FD_OPEN_ERROR -9
+#define FD_CLOSE_ERROR -10
 
 #endif

@@ -5,7 +5,7 @@
 int main() {
     initialize_env();
 
-    struct Job job;
+    struct Job job = {0};
     int status = get_job(&job, STDIN_FD);
 
     while (is_job_exit(job) == FALSE && status == SUCCESS) {

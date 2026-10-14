@@ -31,12 +31,13 @@ int get_job(struct Job *job, int fd);
 /**
  * @brief Executes the given command.
  * @param command The Command structure containing the command to execute.
- * @param input_fd The file descriptor for child's standard input.
- * @param output_fd The file descriptor for child's standard output.
+ * @param infile_fd The file descriptor for child's standard input.
+ * @param outfile_fd The file descriptor for child's standard output.
+ * @param fd_to_close The file descriptor to close in the child process (if any).
  *
- * @return 0 on success, or ERROR on failure.
+ * @return The PID of the child process on success, or ERROR on failure.
  */
-int run_command(struct Command *command, int input_fd, int output_fd);
+pid_t run_command(struct Command *command, int infile_fd, int outfile_fd, int fd_to_close);
 
  /**
  * @brief checks if the command is an exit command
