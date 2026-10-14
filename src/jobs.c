@@ -77,6 +77,7 @@ int handle_pipeline(struct Job *job, int *infile_fd) {
         }
         
         status = close(pipefd[WRITE_END]);
+        // This handles closing the old read end of the previous pipe
         status = status_keep_error(status, close_input_file(infile_fd));
 
         *infile_fd = pipefd[READ_END];

@@ -59,10 +59,12 @@ void handle_child_process(struct Command *command, int infile_fd, int outfile_fd
         handle_error_with_memory_cleanup(command->argv[0]);
     }
 
+    // Closes the read end of the pipe (if in a pipeline) since we aren't using it
     if (fd_to_close != NONE) {
         status = status_keep_error(status, close(fd_to_close));
     }   
 
+    // Handles redirection to file descriptors (pipe ends or files) if necessary
     status = status_keep_error(status, handle_redirection(infile_fd, outfile_fd));
 
     if (status == ERROR) {
