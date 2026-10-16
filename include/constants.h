@@ -60,5 +60,11 @@
 // file descriptor related errors
 #define FD_OPEN_ERROR -9
 #define FD_CLOSE_ERROR -10
-
+// for cache
+#define CACHE_MAX_SIZE 128
+#define CACHE_KEY_MAX 64 // Max length of any key
+#define CACHE_MAX_PATH 256 // this is to match buffer size
+#define ENTRYNOTFOUND -11 // when lookup fails
+#define ENTRYEXISTS -12 // when trying to insert existing command
+#define CACHEFULL -13
 #endif
