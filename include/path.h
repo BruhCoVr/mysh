@@ -2,7 +2,7 @@
 #define PATH_H
 
 #include <unistd.h>
-
+#include <cache.h>
 #include <env.h>
 
 /**
