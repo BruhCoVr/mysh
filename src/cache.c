@@ -81,6 +81,7 @@ int cache_insert(const char *command_name, const char *path) {
             str_cpy(entry->command_name, command_name);
             str_cpy(entry->path, path);
             entry->in_use = TRUE;
+            
             return SUCCESS;
         }
     }
