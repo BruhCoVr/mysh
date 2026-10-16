@@ -48,4 +48,9 @@ struct Job {
  */
 int run_job(struct Job *job);
 
+/**
+ * @brief Reaps (removes) all zombie processes.
+ */
+void reap_zombies(void);
+
 #endif

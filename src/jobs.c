@@ -155,3 +155,19 @@ int run_job(struct Job *job) {
 
     return status;
 }
+
+void reap_zombies(void) {
+    int wait_status;
+    pid_t pid = waitpid(-1, &wait_status, WNOHANG);
+    
+    /**
+     * Basically as long as a pid is being returned we are reaping
+     * children. Gotta keep calling it because there may be more unreaped.
+     * If we're in a child we obviously stop because it has not exited yet.
+     * Otherwise there's the possibility of an error, if we wanna handle that
+     * we can. There are 5 possible errors to get.
+     */
+    while (pid > 0) {
+        pid = waitpid(-1, &wait_status, WNOHANG);
+    }
+}

@@ -10,6 +10,7 @@ int main() {
 
     while (is_job_exit(job) == FALSE && status == SUCCESS) {
         status = run_job(&job);
+        reap_zombies();
         status = get_job(&job, STDIN_FD);
     }
 
