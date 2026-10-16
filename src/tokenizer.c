@@ -78,7 +78,8 @@ int tokenize_input(char *input, char *tokens[]) {
         status = insert_token(tokens, token_buffer, &token_count);
     }
 
-    // Should free token_buffer here?
+    // Tokens are stored in tokens[] array so can free token_buffer
+    free_all();
 
     tokens[token_count] = NULL;
     return status;
