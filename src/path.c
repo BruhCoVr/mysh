@@ -39,7 +39,7 @@ int check_env_paths(const char *input_path, char* path) {
         str_cat(path, input_path);
 
         if (file_exists(path) == TRUE) {
-            return 0;
+            return SUCCESS;
         }
 
         if (*env_path == ':') {
@@ -52,18 +52,29 @@ int check_env_paths(const char *input_path, char* path) {
 
 int get_absolute_path(const char *input_path, char *path) {
     // do cache lookup here. If not found continue on and then add it to cache
-    
+    if (cache_lookup(input_path, path) == SUCCESS) {
+        // Make sure the file actually exists otherwise we have a stale cache entry
+        if (file_exists(path)) {
+            return SUCCESS;
+        }
+    }
 
     // check if absolute path
     if (file_exists(input_path) == TRUE) {
         str_cpy(path, input_path);
-        return 0;
+        return SUCCESS;
     }
 
     if (is_relative_path(input_path) == TRUE) {
         relative_path_to_absolute(input_path, path);
-        return file_exists(path) ? 0 : ERROR;     
+        return file_exists(path) ? SUCCESS : ERROR;     
     }
 
-    return check_env_paths(input_path, path);
+    int status = check_env_paths(input_path, path);
+    // Since env path found the file we can add it to the cache
+    if (status == SUCCESS) {
+        cache_insert(input_path, path);
+    }
+
+    return status; 
 }
