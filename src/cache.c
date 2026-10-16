@@ -76,6 +76,7 @@ int cache_insert(const char *command_name, const char *path) {
     for (int i = 0; i < CACHE_MAX_SIZE; i++) {
         idx = (idx + i) % CACHE_MAX_SIZE;
         struct CacheEntry *entry = &cache[idx];
+        
         if (entry->in_use == FALSE) {
             str_cpy(entry->command_name, command_name);
             str_cpy(entry->path, path);
