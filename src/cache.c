@@ -10,10 +10,6 @@ struct CacheEntry {
 
 static struct CacheEntry cache[CACHE_MAX_SIZE];
 
-static unsigned int get_command_idx(const char *command_name) {
-    return hash(command_name) % CACHE_MAX_SIZE;
-}
-
 static unsigned int hash(const char *command_name) {
     // The seed is from "Trending Pages": 
     // https://prime-numbers.fandom.com/wiki/Category:4-Digit_Prime_Numbers
@@ -24,6 +20,10 @@ static unsigned int hash(const char *command_name) {
     }
 
     return hash;
+}
+
+static unsigned int get_command_idx(const char *command_name) {
+    return hash(command_name) % CACHE_MAX_SIZE;
 }
 
 int cache_lookup(const char *command_name, char *out_path) {
@@ -81,7 +81,7 @@ int cache_insert(const char *command_name, const char *path) {
             str_cpy(entry->command_name, command_name);
             str_cpy(entry->path, path);
             entry->in_use = TRUE;
-            
+
             return SUCCESS;
         }
     }
