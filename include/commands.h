@@ -25,6 +25,7 @@
  *
  * @return One of the following: SUCCESS, ERROR, TOKEN_LIMIT_REACHED, TOKEN_TOO_LONG,
  * EMPTY_INPUT, MISSING_FILENAME, SYNTAX_ERROR
+ * Fails if the input is too long, if there are too many tokens, or if there is a syntax error.
  */
 int get_job(struct Job *job, int fd);
 

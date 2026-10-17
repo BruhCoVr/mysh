@@ -39,7 +39,7 @@ int check_env_paths(const char *input_path, char* path) {
         str_cat(path, input_path);
 
         if (file_exists(path) == TRUE) {
-            return 0;
+            return SUCCESS;
         }
 
         if (*env_path == ':') {
@@ -47,19 +47,19 @@ int check_env_paths(const char *input_path, char* path) {
         }
     }
 
-    return -1;
+    return ERROR;
 }
 
 int get_absolute_path(const char *input_path, char *path) {
     // check if absolute path
     if (file_exists(input_path) == TRUE) {
         str_cpy(path, input_path);
-        return 0;
+        return SUCCESS;
     }
 
     if (is_relative_path(input_path) == TRUE) {
         relative_path_to_absolute(input_path, path);
-        return file_exists(path) ? 0 : -1;     
+        return file_exists(path) ? SUCCESS : ERROR;     
     }
 
     return check_env_paths(input_path, path);

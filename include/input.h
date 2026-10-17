@@ -22,7 +22,7 @@
  * @param buffer The buffer to store the input.
  * @param fd The file descriptor to read from.
  *
- * @return The number of characters read, or -1 on error.
+ * @return The number of characters read, or ERROR on failure.
  */
 int readline(char *buffer, int fd);
 
@@ -32,7 +32,7 @@ int readline(char *buffer, int fd);
  *
  * @param is_buffer_empty A flag indicating whether the buffer is empty.
  * @param fd The file descriptor to read from.
- * @return 0 on success, or ERROR on failure.
+ * @return SUCCESS or ERROR.
  */
 int flush_buffer(int is_buffer_empty, int fd);
 
@@ -42,7 +42,7 @@ int flush_buffer(int is_buffer_empty, int fd);
  * 
  * @param input_buffer The buffer containing the input.
  * @param bytes_read The number of bytes read into the buffer.
- * @return void
+ * @return None. The input_buffer is modified in place.
  */
 void stringify_buffer(char* input_buffer, int bytes_read);
 

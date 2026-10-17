@@ -34,7 +34,7 @@ static int is_token_operator(const char *token) {
  * @param cmd The command structure to populate
  * @param token_idx The current place to start reading tokens from
  * 
- * @return SUCCESS or SYNTAX_ERROR
+ * @return SUCCESS or SYNTAX_ERROR by checking if the command has at least one argument.
  */
 static int parse_command(char* tokens[], struct Command *cmd, int *token_idx) {
 
