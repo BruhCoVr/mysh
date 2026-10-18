@@ -46,17 +46,10 @@ int handle_redirection(int infile_fd, int outfile_fd) {
     return status;
 }
 
-void handle_child_process(struct Command *command, int infile_fd, int outfile_fd, int fd_to_close) {
+void handle_child_process(struct Command *command, const char *absolute_path, int infile_fd, int outfile_fd, int fd_to_close) {
     int status = SUCCESS;
     if (command->argv[0] == NULL) {
         return;
-    }
-
-    char absolute_path[256];
-
-    if (get_absolute_path(command->argv[0], absolute_path) == ERROR) {
-        print("Command not found: ");
-        handle_error_with_memory_cleanup(command->argv[0]);
     }
 
     // Closes the read end of the pipe (if in a pipeline) since we aren't using it
@@ -81,6 +74,14 @@ void handle_child_process(struct Command *command, int infile_fd, int outfile_fd
 }
 
 pid_t run_command(struct Command *command, int infile_fd, int outfile_fd, int fd_to_close) {
+    
+    // Since parent must own the cache we need to find abs path before forking
+    char absolute_path[256];
+    if (get_absolute_path(command->argv[0], absolute_path) == ERROR) {
+        print("Command not found: ");
+        return handle_error_with_memory_cleanup(command->argv[0]);
+    }
+
     pid_t pid;
 
     pid = fork();
@@ -89,7 +90,7 @@ pid_t run_command(struct Command *command, int infile_fd, int outfile_fd, int fd
         case ERROR:
             return handle_error_with_memory_cleanup("Error occurred while forking process");
         case 0:
-            handle_child_process(command, infile_fd, outfile_fd, fd_to_close);
+            handle_child_process(command, absolute_path, infile_fd, outfile_fd, fd_to_close);
             exit(ERROR);
         default:
             return pid;

@@ -20,7 +20,7 @@ void relative_path_to_absolute(const char *relative_path, char *absolute_path) {
  * @param input_path The relative path to check for existence in the PATH environment.
  * @param path The relative path to check for existence in the PATH environment.
  * 
- * @return 0 if the file exists in one of the paths, -1 if not.
+ * @return 0 if the file exists in one of the paths, ERROR if not.
  */
 int check_env_paths(const char *input_path, char* path) {
     char *env_path = get_path();
@@ -51,6 +51,14 @@ int check_env_paths(const char *input_path, char* path) {
 }
 
 int get_absolute_path(const char *input_path, char *path) {
+    // do cache lookup here. If not found continue on and then add it to cache
+    if (cache_lookup(input_path, path) == SUCCESS) {
+        // Make sure the file actually exists otherwise we have a stale cache entry
+        if (file_exists(path)) {
+            return SUCCESS;
+        }
+    }
+
     // check if absolute path
     if (file_exists(input_path) == TRUE) {
         str_cpy(path, input_path);
@@ -62,5 +70,11 @@ int get_absolute_path(const char *input_path, char *path) {
         return file_exists(path) ? SUCCESS : ERROR;     
     }
 
-    return check_env_paths(input_path, path);
+    int status = check_env_paths(input_path, path);
+    // Since env path found the file we can add it to the cache
+    if (status == SUCCESS) {
+        status = cache_insert(input_path, path);
+    }
+
+    return status; 
 }
