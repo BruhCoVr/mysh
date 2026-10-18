@@ -35,7 +35,7 @@ int print_ssize_t(const ssize_t value);
  *
  * @param VALUE The value to print.
  *
- * @return 0 on success, or -1 on error.
+ * @return SUCCESS or ERROR.
  */
 #define print(VALUE) _Generic((VALUE), \
     int: print_int, \
@@ -49,7 +49,7 @@ int print_ssize_t(const ssize_t value);
  *
  * @param s The string to print.
  *
- * @return 0 on success, or -1 on error.
+ * @return SUCCESS or ERROR.
  */
 int println(const char *s);
 
