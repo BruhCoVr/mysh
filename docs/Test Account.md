@@ -9,4 +9,4 @@
 Append `mysh` to the end of this file.\
 `/usr/local/bin/mysh`
 6. `sudo useradd --shell /usr/local/bin/mysh testuser` \
-Set password to `testuser`, name to `TestUser`, and default for everything else.
+Set password to `testuser`, name to `TestUser`, and default for everything else. The `--shell` step removes the need for a `chsh` command after creating the new user. Does it all at once.
