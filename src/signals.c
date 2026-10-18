@@ -25,6 +25,3 @@ void setup_signals(void) {
     // Ignore SIGTSTP (CTRL+Z) everywhere
     signal(SIGTSTP, SIG_IGN);
 }
-
-
-

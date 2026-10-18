@@ -1,5 +1,6 @@
 #include <input.h>
 #include <constants.h>
+#include <errno.h>
 
 int readline(char *input_buffer, int fd) {
     int i = 0;
@@ -8,6 +9,17 @@ int readline(char *input_buffer, int fd) {
 
     while(i < MAX_BUFFER_SIZE) {
         ssize_t bytes_read = read(fd, &input_buffer[i], 1);
+
+        /** 
+         * CTRL+C was printing "Error occurred while reading input"
+         * so we need to check if errno was set to EINTR. If it is then we know
+         * CTRL+C was hit. EINTR is set when a system call (like read()) is interrupted
+         * in some way (per signal(7) manpage)
+         */
+        if (bytes_read == ERROR && errno == EINTR) {
+            input_buffer[0] = NULL_TERMINATOR;
+            return SUCCESS; // success to exit on CTRL+C
+        }
 
         if (bytes_read == ERROR) {
             return ERROR;
