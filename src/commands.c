@@ -68,8 +68,8 @@ void handle_child_process(struct Command *command, const char *absolute_path, in
     status = execve(absolute_path, command->argv, environ);
 
     if (status == ERROR) {
-        print("Error occurred while executing command: ");
-        println(command->argv[0]);
+        errprint("Error occurred while executing command: ");
+        errprintln(command->argv[0]);
     }
 }
 
@@ -78,7 +78,7 @@ pid_t run_command(struct Command *command, int infile_fd, int outfile_fd, int fd
     // Since parent must own the cache we need to find abs path before forking
     char absolute_path[256];
     if (get_absolute_path(command->argv[0], absolute_path) == ERROR) {
-        print("Command not found: ");
+        errprint("Command not found: ");
         return handle_error_with_memory_cleanup(command->argv[0]);
     }
 

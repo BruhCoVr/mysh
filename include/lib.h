@@ -12,6 +12,7 @@
 #include <sys/syscall.h>
 #include <heap.h>
 #include <output.h>
+#include <stderr.h>
 
 /**
  * @brief Returns the length of a null-terminated string.

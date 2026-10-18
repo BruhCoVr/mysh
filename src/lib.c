@@ -157,7 +157,7 @@ void exit(int status) {
 
 int handle_error(const char *msg) {
     if (str_eq(msg, "") == FALSE) {
-        println(msg);
+        errprintln(msg);
     }
 
     return ERROR;
