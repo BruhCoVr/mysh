@@ -4,6 +4,7 @@
 // int argc, char **argv
 int main() {
     initialize_env();
+    setup_signals();
 
     struct Job job = {0};
     int status = get_job(&job, STDIN_FD);
