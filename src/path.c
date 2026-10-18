@@ -73,7 +73,7 @@ int get_absolute_path(const char *input_path, char *path) {
     int status = check_env_paths(input_path, path);
     // Since env path found the file we can add it to the cache
     if (status == SUCCESS) {
-        cache_insert(input_path, path);
+        status = cache_insert(input_path, path);
     }
 
     return status; 
