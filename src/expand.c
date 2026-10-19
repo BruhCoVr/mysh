@@ -8,9 +8,9 @@
  * the start of a variable. Loops through entire token because foo$HOME/bar
  * is a valid token, so not all tokens will have '$' at token[0]
  * 
- * @param token the token to check for $
+ * @param token The token to check for $
  * 
- * @return TRUE if contains '$', FALSE otherwise
+ * @return TRUE if contains '$', FALSE otherwise.
  */
 static int contains_dollar(const char *token) {
     
@@ -34,9 +34,9 @@ static int contains_dollar(const char *token) {
  */
 static int is_name_char(char c) {
     return (c >= 'a' && c <= 'z')
-        || (c >= 'A' && c <= 'Z')
-        || (c >= '0' && c <= '9')
-        || c == '_';
+           || (c >= 'A' && c <= 'Z')
+           || (c >= '0' && c <= '9')
+           || c == '_';
 }
 
 /**
@@ -90,13 +90,13 @@ static int append_string(char *out, int *out_len, const char *str) {
 }
 
 /**
- * @brief Expands a single token into the appropriate value
+ * @brief Expands a single token into the appropriate value.
  * 
- * @param token the token to expand
- * @param expanded_token the output buffer to write the expanded token to.
+ * @param token The token to expand
+ * @param expanded_token The output buffer to write the expanded token to.
  * Must be at least MAX_EXPANDED_TOKEN_SIZE bytes.
  * 
- * @return SUCCESS, EXPANSION_TOO_LONG 
+ * @return SUCCESS, EXPANSION_TOO_LONG otherwise.
  */
 static int expand_token(const char *token, char *expanded_token) {
     int status = SUCCESS;
@@ -122,7 +122,7 @@ static int expand_token(const char *token, char *expanded_token) {
         int name_len = j - name_start;
  
         if (name_len == 0) {
-            // A lone '$' (e.g. "$" or "$/"), keep it literally
+            // '$' on it's own. Keep it since there's nothing we can do with it
             status = append_char(expanded_token, &expanded_tok_len, '$');
             i++;
         } else {
