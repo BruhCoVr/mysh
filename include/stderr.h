@@ -5,10 +5,7 @@
 
 #include <unistd.h>
 #include <lib.h>
-
-#define STDOUT_FD 1
-#define STDERR_FD 2
-#define STDIN_FD 0
+#include <constants.h>
 
 
 int errprint(const char *s);

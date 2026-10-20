@@ -7,8 +7,8 @@ int handle_input_redirection(int *infile_fd, char *infile_path) {
         *infile_fd = open(infile_path, O_RDONLY);
 
         if (*infile_fd == ERROR){
-            print("Error opening input file: ");
-            println(infile_path);
+            errprint("Error opening input file: ");
+            errprintln(infile_path);
             return FD_OPEN_ERROR;
         }
     }
@@ -21,8 +21,8 @@ int handle_output_redirection(int *outfile_fd, char *outfile_path) {
         *outfile_fd = open(outfile_path, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
 
         if (*outfile_fd == ERROR){
-            print("Error opening output file: ");
-            println(outfile_path);
+            errprint("Error opening output file: ");
+            errprintln(outfile_path);
             return FD_OPEN_ERROR;
         }
     }
@@ -63,7 +63,7 @@ int handle_pipeline(struct Job *job, int *infile_fd) {
     for (unsigned int stage = 0; stage < job->num_stages - 1; stage++) {
         status = pipe(pipefd); // sets errno
         if (status == ERROR) {
-            print("Error occurred while creating pipe\n");
+            errprint("Error occurred while creating pipe\n");
             return ERROR;
         }
 
@@ -72,7 +72,7 @@ int handle_pipeline(struct Job *job, int *infile_fd) {
         if (pid == ERROR) {
             close(pipefd[READ_END]);
             close(pipefd[WRITE_END]);
-            print("Error occurred while running command\n");
+            errprint("Error occurred while running command\n");
             return ERROR;
         }
         
@@ -86,7 +86,7 @@ int handle_pipeline(struct Job *job, int *infile_fd) {
         pid_count++;
 
         if (status == ERROR) {
-            print("Error occurred while closing input file\n");
+            errprint("Error occurred while closing input file\n");
             return ERROR;
         } 
     }
@@ -115,7 +115,7 @@ int run_job(struct Job *job) {
 
     if (status != SUCCESS) {
         close_input_file(&infile_fd);
-        print("Error occurred while opening input file\n");
+        errprint("Error occurred while opening input file\n");
         return status;
     }
 
@@ -123,7 +123,7 @@ int run_job(struct Job *job) {
 
     if (pid_count == ERROR) {
         close_open_files(&infile_fd, &outfile_fd);
-        print("Error occurred while handling pipeline\n");
+        errprint("Error occurred while handling pipeline\n");
         return ERROR;
     }
 
@@ -131,7 +131,7 @@ int run_job(struct Job *job) {
 
     if (status != SUCCESS) {
         close_open_files(&infile_fd, &outfile_fd);
-        print("Error occurred while opening output file\n");
+        errprint("Error occurred while opening output file\n");
         return ERROR;
     }
 
@@ -139,7 +139,7 @@ int run_job(struct Job *job) {
     pid_t pid = run_command(&job->pipeline[job->num_stages - 1], infile_fd, outfile_fd, NONE);
     if (pid == ERROR) {
         close_open_files(&infile_fd, &outfile_fd);
-        print("Error occurred while running command\n");
+        errprint("Error occurred while running command\n");
         return ERROR;
     }
 
