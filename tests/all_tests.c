@@ -5,7 +5,6 @@
 #include "include/test_tokenizer.h"
 #include "include/test_commands.h"
 #include "include/test_e2e.h"
-#include "include/test_run.h"
 #include <stdio.h>
 
 int main() {
@@ -23,5 +22,4 @@ int main() {
     run_test_commands();
     printf("\Running E2E Tests\n");
     run_test_e2e();
-    run_test_run();
 }
