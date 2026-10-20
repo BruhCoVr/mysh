@@ -18,7 +18,7 @@ void setup_signals(void) {
     // Need a handler for this one because we want it to work in the children
     act.sa_handler = &handle_sigint;
     if(sigaction(SIGINT, &act, NULL) == ERROR) {
-        // TODO: ADD PRINTERR HERE WHEN MERGED
+        errprint("Error setting up SIGINT handler\n");
         exit(EXIT);
     }
     
