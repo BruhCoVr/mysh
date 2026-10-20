@@ -151,6 +151,7 @@ void str_cat(char *dest, const char *src) {
 
 void exit(int status) {
     // Mask as 0-255 are the only valid status exit codes
+    free_all();
     status = status & 255;
     syscall(SYS_exit_group, status);
 }
