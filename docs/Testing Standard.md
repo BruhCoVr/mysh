@@ -18,6 +18,7 @@ For **modules**: `test_[module name].c`
 Within **module files** (the `test_[module name].c` files): `void test_[function name]_[type of test(optional)](void)`
 > i.e. for testing an empty line in the `readline()` function in `input.c` the function name could be as follows below:
 ```C
+/* test_input.c */
 void test_readline_empty_line(void) {/* Code goes here */}
 ```
 
