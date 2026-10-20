@@ -12,5 +12,6 @@
 #include <constants.h>
 #include <jobs.h>
 #include <commands.h>
+#include <signals.h>
 
 #endif
