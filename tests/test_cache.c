@@ -4,6 +4,7 @@
 #include "../include/constants.h"
 #include <stdio.h>
 #include <unistd.h>
+#include <string.h>
 
 static void test_insert_then_lookup(void) {
     char out_path[CACHE_MAX_PATH] = {0};
@@ -26,7 +27,6 @@ static void test_lookup_missing(void) {
 }
 
 static void test_insert_duplicate(void) {
-    char out_path[CACHE_MAX_PATH] = {0};
     
     int insert_status = cache_insert("ls", "/bin/ls");
     
@@ -38,17 +38,23 @@ static void test_insert_duplicate(void) {
 static void test_insert_multiple(void) {
     char out_path[CACHE_MAX_PATH] = {0};
  
-    TEST_ASSERT_EQUAL_INT((int32_t) SUCCESS, (int32_t) insert_tracked("grep", "/usr/bin/grep"));
-    TEST_ASSERT_EQUAL_INT((int32_t) SUCCESS, (int32_t) insert_tracked("sort", "/usr/bin/sort"));
-    TEST_ASSERT_EQUAL_INT((int32_t) SUCCESS, (int32_t) insert_tracked("wc", "/usr/bin/wc"));
+    int insert_status = cache_insert("grep", "/usr/bin/grep");
+    TEST_ASSERT_EQUAL_INT((int32_t) SUCCESS, insert_status);
+    insert_status = cache_insert("sort", "/usr/bin/sort");
+    TEST_ASSERT_EQUAL_INT((int32_t) SUCCESS, (int32_t) insert_status);
+    insert_status = cache_insert("wc", "/usr/bin/wc");
+    TEST_ASSERT_EQUAL_INT((int32_t) SUCCESS, (int32_t) insert_status);
  
-    TEST_ASSERT_EQUAL_INT((int32_t) SUCCESS, (int32_t) cache_lookup("grep", out_path));
+    int lookup_status = cache_lookup("grep", out_path);
+    TEST_ASSERT_EQUAL_INT((int32_t) SUCCESS, (int32_t) lookup_status);
     TEST_ASSERT_EQUAL_CHAR_ARR("/usr/bin/grep", out_path);
  
-    TEST_ASSERT_EQUAL_INT((int32_t) SUCCESS, (int32_t) cache_lookup("sort", out_path));
+    lookup_status = cache_lookup("sort", out_path);
+    TEST_ASSERT_EQUAL_INT((int32_t) SUCCESS, (int32_t) lookup_status);
     TEST_ASSERT_EQUAL_CHAR_ARR("/usr/bin/sort", out_path);
  
-    TEST_ASSERT_EQUAL_INT((int32_t) SUCCESS, (int32_t) cache_lookup("wc", out_path));
+    lookup_status = cache_lookup("wc", out_path);
+    TEST_ASSERT_EQUAL_INT((int32_t) SUCCESS, (int32_t) lookup_status);
     TEST_ASSERT_EQUAL_CHAR_ARR("/usr/bin/wc", out_path);
 }
 
@@ -57,8 +63,6 @@ static void test_insert_too_long(void) {
     char long_cmd[CACHE_KEY_MAX + 5];
     memset(long_cmd, 't', CACHE_KEY_MAX + 4);
     long_cmd[CACHE_KEY_MAX + 1] = '\0';
-
-    char out_path[CACHE_KEY_MAX] = {0};
 
     int insert_status = cache_insert(long_cmd, "/bin/longcmd");
     TEST_ASSERT_TRUE(insert_status == ERROR);
