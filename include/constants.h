@@ -73,5 +73,4 @@
 #define STDERR_FD 2
 #define STDIN_FD 0
 
-#include <stderr.h>
 #endif
