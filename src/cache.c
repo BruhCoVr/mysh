@@ -1,6 +1,7 @@
 #include "cache.h"
 #include "constants.h"
 #include "lib.h"
+#include "stderr.h"
 
 struct CacheEntry {
     int in_use; // FALSE if not in use, TRUE if in use
@@ -54,13 +55,13 @@ int cache_lookup(const char *command_name, char *out_path) {
 int cache_insert(const char *command_name, const char *path) {
     // Reject if command is too long
     if (str_len(command_name) > CACHE_KEY_MAX) {
-        print("Command too long: ");
+        errprint("Command too long: ");
         return handle_error_with_memory_cleanup(command_name);
     }
 
     // Reject if path is too long
     if (str_len(path) > CACHE_MAX_PATH) {
-        print("Path too long: ");
+        errprint("Path too long: ");
         return handle_error_with_memory_cleanup(path);
     }
 

@@ -1,6 +1,8 @@
 #ifndef CACHE_H
 #define CACHE_H
 
+#include <stderr.h>
+
 /**
  * @brief Looks up the command in the cache.
  * 

@@ -69,4 +69,10 @@
 #define ENTRYNOTFOUND -11 // when lookup fails
 #define ENTRYEXISTS -12 // when trying to insert existing command
 #define CACHEFULL -13
+
+//For stderr
+#define STDOUT_FD 1
+#define STDERR_FD 2
+#define STDIN_FD 0
+
 #endif

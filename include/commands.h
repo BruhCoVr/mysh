@@ -17,6 +17,7 @@
 #include <jobs.h>
 #include <path.h>
 #include <parser.h>
+#include <stderr.h>
 
 /**
  * @brief Reads from the given fd and populates the given Job structure.

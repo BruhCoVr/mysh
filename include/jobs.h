@@ -9,6 +9,7 @@
 #include <sys/types.h>
 
 #include <constants.h>
+#include <stderr.h>
 
 /**
  * @brief Represents a command as an array of string arguments.
