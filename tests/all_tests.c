@@ -21,7 +21,7 @@ int main() {
     run_test_tokenizer();
     printf("\nTesting commands.c\n");
     run_test_commands();
-    printf("\Running E2E Tests\n");
+    printf("\nRunning E2E Tests\n");
     run_test_e2e();
     run_test_run();
 }
