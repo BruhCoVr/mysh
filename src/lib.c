@@ -153,6 +153,8 @@ void exit(int status) {
     // Mask as 0-255 are the only valid status exit codes
     status = status & 255;
     syscall(SYS_exit_group, status);
+    //googled this because of a weird error.
+    __builtin_unreachable(); 
 }
 
 int handle_error(const char *msg) {
