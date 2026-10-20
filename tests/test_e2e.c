@@ -10,6 +10,8 @@
 #define E2E_IN_PATH "/tmp/mysh_e2e.in"
 #define E2E_OUT_PATH "/tmp/mysh_e2e.out"
 #define E2E_REL_SCRIPT_PATH "/tmp/e2e_rel.sh"
+#define E2E_REDIR_IN_PATH "/tmp/mysh_e2e_redir.in"
+#define E2E_REDIR_OUT_PATH "/tmp/mysh_e2e_redir.out"
 
 // Overrides just the vars the prompt embeds, so it's identical
 // regardless of who/where the test runs. PATH (needed for the
@@ -38,6 +40,19 @@ static int run_mysh_with_status(const char *input, char *out_buffer, size_t out_
 
 static void run_mysh(const char *input, char *out_buffer, size_t out_size) {
     run_mysh_with_status(input, out_buffer, out_size);
+}
+
+static void write_file(const char *path, const char *contents) {
+    FILE *file = fopen(path, "w");
+    fputs(contents, file);
+    fclose(file);
+}
+
+static void read_file(const char *path, char *out_buffer, size_t out_size) {
+    FILE *file = fopen(path, "r");
+    size_t n = fread(out_buffer, 1, out_size - 1, file);
+    out_buffer[n] = '\0';
+    fclose(file);
 }
 
 // Resolves "echo" to an absolute path via the caller's PATH, so the
@@ -124,7 +139,7 @@ void test_unknown_command(void) {
     char expected[512] = "";
     strcat(expected, PROMPT);
     strcat(expected, "Command not found: not_a_real_binary\n");
-    strcat(expected, "Error occurred while executing command\n");
+    strcat(expected, "Error occurred while running command\n");
     strcat(expected, PROMPT);
 
     TEST_ASSERT_EQUAL_CHAR_ARR(expected, output);
@@ -204,6 +219,93 @@ void test_multiple_sequential_commands(void) {
     TEST_ASSERT_EQUAL_CHAR_ARR(expected, output);
 }
 
+void test_output_redirection(void) {
+    remove(E2E_REDIR_OUT_PATH);
+
+    char output[256];
+    run_mysh("echo hello > " E2E_REDIR_OUT_PATH "\nexit\n", output, sizeof(output));
+
+    char file_contents[256];
+    read_file(E2E_REDIR_OUT_PATH, file_contents, sizeof(file_contents));
+
+    TEST_ASSERT_EQUAL_CHAR_ARR(PROMPT PROMPT, output);
+    TEST_ASSERT_EQUAL_CHAR_ARR("hello\n", file_contents);
+}
+
+void test_output_redirection_truncates(void) {
+    write_file(E2E_REDIR_OUT_PATH, "old contents that are longer\n");
+
+    char output[256];
+    run_mysh("echo new > " E2E_REDIR_OUT_PATH "\nexit\n", output, sizeof(output));
+
+    char file_contents[256];
+    read_file(E2E_REDIR_OUT_PATH, file_contents, sizeof(file_contents));
+
+    TEST_ASSERT_EQUAL_CHAR_ARR("new\n", file_contents);
+}
+
+void test_input_redirection(void) {
+    write_file(E2E_REDIR_IN_PATH, "from file\n");
+
+    char output[256];
+    run_mysh("cat < " E2E_REDIR_IN_PATH "\nexit\n", output, sizeof(output));
+
+    TEST_ASSERT_EQUAL_CHAR_ARR(PROMPT "from file\n" PROMPT, output);
+}
+
+void test_input_and_output_redirection(void) {
+    write_file(E2E_REDIR_IN_PATH, "copied\n");
+    remove(E2E_REDIR_OUT_PATH);
+
+    char output[256];
+    run_mysh("cat < " E2E_REDIR_IN_PATH " > " E2E_REDIR_OUT_PATH "\nexit\n",
+             output, sizeof(output));
+
+    char file_contents[256];
+    read_file(E2E_REDIR_OUT_PATH, file_contents, sizeof(file_contents));
+
+    TEST_ASSERT_EQUAL_CHAR_ARR(PROMPT PROMPT, output);
+    TEST_ASSERT_EQUAL_CHAR_ARR("copied\n", file_contents);
+}
+
+void test_two_stage_pipeline(void) {
+    char output[256];
+    run_mysh("echo hello | wc -c\nexit\n", output, sizeof(output));
+
+    TEST_ASSERT_EQUAL_CHAR_ARR(PROMPT "6\n" PROMPT, output);
+}
+
+void test_three_stage_pipeline(void) {
+    char output[256];
+    run_mysh("echo hello | cat | wc -c\nexit\n", output, sizeof(output));
+
+    TEST_ASSERT_EQUAL_CHAR_ARR(PROMPT "6\n" PROMPT, output);
+}
+
+void test_pipeline_with_input_redirection(void) {
+    write_file(E2E_REDIR_IN_PATH, "piped\n");
+
+    char output[256];
+    // Redirections follow the whole pipeline; "<" feeds the first stage
+    run_mysh("cat | wc -c < " E2E_REDIR_IN_PATH "\nexit\n", output, sizeof(output));
+
+    TEST_ASSERT_EQUAL_CHAR_ARR(PROMPT "6\n" PROMPT, output);
+}
+
+void test_pipeline_with_output_redirection(void) {
+    remove(E2E_REDIR_OUT_PATH);
+
+    char output[256];
+    run_mysh("echo hello | wc -c > " E2E_REDIR_OUT_PATH "\nexit\n",
+             output, sizeof(output));
+
+    char file_contents[256];
+    read_file(E2E_REDIR_OUT_PATH, file_contents, sizeof(file_contents));
+
+    TEST_ASSERT_EQUAL_CHAR_ARR(PROMPT PROMPT, output);
+    TEST_ASSERT_EQUAL_CHAR_ARR("6\n", file_contents);
+}
+
 void run_test_e2e(void) {
     RUN_TEST(test_empty_line);
     RUN_TEST(test_redundant_spaces);
@@ -216,4 +318,12 @@ void run_test_e2e(void) {
     RUN_TEST(test_bare_exit_first_command);
     RUN_TEST(test_input_after_exit_ignored);
     RUN_TEST(test_multiple_sequential_commands);
+    RUN_TEST(test_output_redirection);
+    RUN_TEST(test_output_redirection_truncates);
+    RUN_TEST(test_input_redirection);
+    RUN_TEST(test_input_and_output_redirection);
+    RUN_TEST(test_two_stage_pipeline);
+    RUN_TEST(test_three_stage_pipeline);
+    RUN_TEST(test_pipeline_with_input_redirection);
+    RUN_TEST(test_pipeline_with_output_redirection);
 }
