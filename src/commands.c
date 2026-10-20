@@ -1,4 +1,5 @@
 #include "commands.h"
+#include "expand.h"
 
 int get_job(struct Job *job, int fd) {
     char *input_buffer = alloc(MAX_BUFFER_SIZE);
@@ -16,6 +17,12 @@ int get_job(struct Job *job, int fd) {
     char *tokens[MAX_TOKENS + 1];
     int status = tokenize_input(input_buffer, tokens);
     
+    if (status != SUCCESS) {
+        return status;
+    }
+
+    // Expand anything like $PATH, $HOME, etc...
+    status = expand_variables(tokens);
     if (status != SUCCESS) {
         return status;
     }

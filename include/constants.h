@@ -12,6 +12,7 @@
 #define MAX_ARGS 64
 #define MAX_TOKENS 64
 #define MAX_PIPELINE_LEN 8
+#define MAX_EXPANDED_TOKEN_SIZE 1024
 
 // Custom heap size for "dynamic" memory managements
 #define HEAP_SIZE 10000
@@ -51,6 +52,7 @@
 #define TOKEN_LIMIT_REACHED -2
 #define TOKEN_TOO_LONG -3
 #define EMPTY_INPUT -4
+#define EXPANSION_TOO_LONG -14
 // used in parser to indicate something wrong with the command
 #define SYNTAX_ERROR -5
 // flag to indicate missing filename for > or < operator
